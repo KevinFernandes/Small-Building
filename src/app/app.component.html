@@ -2,6 +2,6 @@
   <app-toolbar></app-toolbar>
   <div>
     <div>Floors</div>
-    <div *ngFor="let floor of floors">{{floor.floorName}}</div>
+    <app-floor *ngFor="let floor of floors$ | async" [floor]="floor"></app-floor>
   </div>
 </div>

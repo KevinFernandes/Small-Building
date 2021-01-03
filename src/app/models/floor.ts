@@ -1,13 +1,17 @@
+import { EmptyFloorInfo, FloorInfo } from './floor-info';
 import { FloorType } from './floor-type.enum';
 
 export class Floor {
+    floorID: number;
+    floorInfo: FloorInfo;
 
-    constructor(floorName: string = 'Empty', floorType: FloorType = FloorType.Empty) {
-        this.floorName = floorName;
-        this.floorType = floorType;
+    static makeEmptyFloor(floorID: number): Floor {
+        return new Floor(new EmptyFloorInfo(), floorID);
     }
 
-    public floorType: FloorType = FloorType.Empty;
+    constructor(floorInfo: FloorInfo, floorID) {
+        this.floorInfo = floorInfo;
+        this.floorID = floorID;
+    }
 
-    public floorName = 'Empty';
 }

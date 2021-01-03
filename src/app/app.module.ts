@@ -6,6 +6,7 @@ import { FloorComponent } from './components/floor/floor.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { NgxsModule } from '@ngxs/store';
 import { ApplicationState } from './store/app.state';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { ApplicationState } from './store/app.state';
   ],
   imports: [
     BrowserModule,
-    NgxsModule.forRoot([ApplicationState])
+    NgxsModule.forRoot([ApplicationState]),
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

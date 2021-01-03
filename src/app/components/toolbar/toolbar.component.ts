@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
-import { Addfloor } from 'src/app/store/toolbar.actions';
+import { AddFloor } from 'src/app/store/toolbar.actions';
 
 @Component({
   selector: 'app-toolbar',
@@ -15,7 +15,7 @@ export class ToolbarComponent implements OnInit {
   }
 
   addFloor(): void {
-    this.store.dispatch(new Addfloor()).subscribe(() => {
+    this.store.dispatch(new AddFloor()).subscribe(() => {
       const x = 0;
     });
   }

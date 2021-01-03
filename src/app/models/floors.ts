@@ -1,8 +1,9 @@
 import { Floor } from './floor';
+import { FloorInfo, ResidentialFloorInfo, RetailFloorInfo } from './floor-info';
 import { FloorType } from './floor-type.enum';
 
 export abstract class Floors {
-    public floors: Array<Floor> = [];
+    public floors: Array<FloorInfo> = [];
 }
 
 export class ResidentialFloors extends Floors {
@@ -14,15 +15,15 @@ export class ResidentialFloors extends Floors {
     }
 
     protected init(): void {
-        this.floors.push(new Floor('Residential 1', FloorType.Residential));
-        this.floors.push(new Floor('Residential 2', FloorType.Residential));
-        this.floors.push(new Floor('Residential 3', FloorType.Residential));
-        this.floors.push(new Floor('Residential 4', FloorType.Residential));
-        this.floors.push(new Floor('Residential 5', FloorType.Residential));
-        this.floors.push(new Floor('Residential 6', FloorType.Residential));
-        this.floors.push(new Floor('Residential 7', FloorType.Residential));
-        this.floors.push(new Floor('Residential 8', FloorType.Residential));
-        this.floors.push(new Floor('Residential 9', FloorType.Residential));
+        this.floors.push(new ResidentialFloorInfo('Residential 1'));
+        this.floors.push(new ResidentialFloorInfo('Residential 2'));
+        this.floors.push(new ResidentialFloorInfo('Residential 3'));
+        this.floors.push(new ResidentialFloorInfo('Residential 4'));
+        this.floors.push(new ResidentialFloorInfo('Residential 5'));
+        this.floors.push(new ResidentialFloorInfo('Residential 6'));
+        this.floors.push(new ResidentialFloorInfo('Residential 7'));
+        this.floors.push(new ResidentialFloorInfo('Residential 8'));
+        this.floors.push(new ResidentialFloorInfo('Residential 9'));
     }
 }
 
@@ -34,14 +35,14 @@ export class RetailFloors extends Floors {
     }
 
     protected init(): void {
-        this.floors.push(new Floor('Retail 1', FloorType.Retail));
-        this.floors.push(new Floor('Retail 2', FloorType.Retail));
-        this.floors.push(new Floor('Retail 3', FloorType.Retail));
-        this.floors.push(new Floor('Retail 4', FloorType.Retail));
-        this.floors.push(new Floor('Retail 5', FloorType.Retail));
-        this.floors.push(new Floor('Retail 6', FloorType.Retail));
-        this.floors.push(new Floor('Retail 7', FloorType.Retail));
-        this.floors.push(new Floor('Retail 8', FloorType.Retail));
-        this.floors.push(new Floor('Retail 9', FloorType.Retail));
+        this.floors.push(new RetailFloorInfo('Retail 1'));
+        this.floors.push(new RetailFloorInfo('Retail 2'));
+        this.floors.push(new RetailFloorInfo('Retail 3'));
+        this.floors.push(new RetailFloorInfo('Retail 4'));
+        this.floors.push(new RetailFloorInfo('Retail 5'));
+        this.floors.push(new RetailFloorInfo('Retail 6'));
+        this.floors.push(new RetailFloorInfo('Retail 7'));
+        this.floors.push(new RetailFloorInfo('Retail 8'));
+        this.floors.push(new RetailFloorInfo('Retail 9'));
    }
 }

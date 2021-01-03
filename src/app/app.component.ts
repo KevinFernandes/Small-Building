@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
+import { Select } from '@ngxs/store';
+import { Observable } from 'rxjs';
 import { Floor } from './models/floor';
-import { ResidentialFloors } from './models/floors';
+import { ApplicationState } from './store/app.state';
 
 @Component({
   selector: 'app-root',
@@ -9,12 +11,8 @@ import { ResidentialFloors } from './models/floors';
 })
 export class AppComponent {
 
-  private residentialFloors: ResidentialFloors = new ResidentialFloors();
-  public floors: Array<Floor> = [];
-
-  onAddResidential(): void {
-    this.floors.push(this.residentialFloors.floors[this.generateRandom(0, this.residentialFloors.floors.length)]);
-  }
+  @Select(ApplicationState.getAllFloors)
+  floors$: Observable<Floor[]>;
 
   private generateRandom(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min)) + min;
