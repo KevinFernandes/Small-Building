@@ -7,12 +7,16 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { NgxsModule } from '@ngxs/store';
 import { ApplicationState } from './store/app.state';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FloorDetailComponent } from './components/floor-detail/floor-detail.component';
+import { FloorToolbarComponent } from './components/floor-toolbar/floor-toolbar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FloorComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    FloorDetailComponent,
+    FloorToolbarComponent
   ],
   imports: [
     BrowserModule,

@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { Floor } from '../models/floor';
+import { LobbyFloorInfo } from '../models/floor-info';
 import { AddFloor } from './toolbar.actions';
 
 /**
  *
  */
 export class ApplicationStateModel {
-    floors: Array<Floor> = [];
+    floors: Array<Floor> = [Floor.makeLobbyFloor()];
 }
 
 /**

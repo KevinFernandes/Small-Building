@@ -1,20 +1,31 @@
+import { FloorSlot } from './floor-slot';
 import { FloorType } from './floor-type.enum';
 
 export interface IFloorInfo {
     floorName: string;
     floorType: FloorType;
-    slots: number;
+    slots: Array<FloorSlot>;
 }
 
 export abstract class FloorInfo implements IFloorInfo {
     floorName: string;
     floorType: FloorType;
-    slots: number;
+    slots: Array<FloorSlot>;
 
     constructor(floorName: string, floorType: FloorType, slots: number) {
         this.floorName = floorName;
         this.floorType = floorType;
-        this.slots = slots;
+        this.slots = [];
+
+        for (let i = 0; i < slots; ++i) {
+            this.slots.push(new FloorSlot());
+        }
+    }
+}
+
+export class LobbyFloorInfo extends FloorInfo {
+    constructor() {
+        super('Lobby', FloorType.Lobby, 0);
     }
 }
 

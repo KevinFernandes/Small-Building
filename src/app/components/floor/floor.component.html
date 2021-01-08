@@ -1,4 +1,5 @@
-<div class="d-flex">
-    <div>{{floor.floorInfo.floorName}}</div>
-    <button (click)="makeRetail()">Retail</button>
+<div class="d-flex flex-row p-2 border border-danger w-100" style="height: 200px">
+    <div class="d-flex flex-row justify-content-center mb-auto mt-auto" style="width: 15%">{{floor.floorID}}</div>
+    <app-floor-detail [floorInfo]="floor.floorInfo" class="w-100 h-100"></app-floor-detail>
+    <app-floor-toolbar [floorInfo]="floor.floorInfo" style="width: 15%"></app-floor-toolbar>
 </div>
