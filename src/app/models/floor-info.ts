@@ -1,3 +1,4 @@
+import { Guid } from 'guid-typescript';
 import { FloorSlot } from './floor-slot';
 import { FloorType } from './floor-type.enum';
 
@@ -8,11 +9,13 @@ export interface IFloorInfo {
 }
 
 export abstract class FloorInfo implements IFloorInfo {
+    floorId: string;
     floorName: string;
     floorType: FloorType;
     slots: Array<FloorSlot>;
 
     constructor(floorName: string, floorType: FloorType, slots: number) {
+        this.floorId = Guid.raw();
         this.floorName = floorName;
         this.floorType = floorType;
         this.slots = [];

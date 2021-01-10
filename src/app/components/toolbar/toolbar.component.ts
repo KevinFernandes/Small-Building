@@ -15,9 +15,7 @@ export class ToolbarComponent implements OnInit {
   }
 
   addFloor(): void {
-    this.store.dispatch(new AddFloor()).subscribe(() => {
-      const x = 0;
-    });
+    this.store.dispatch(new AddFloor());
   }
 
 }

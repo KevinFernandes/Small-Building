@@ -1,21 +1,22 @@
+import { Guid } from 'guid-typescript';
 import { EmptyFloorInfo, FloorInfo, LobbyFloorInfo } from './floor-info';
 import { FloorType } from './floor-type.enum';
 
 export class Floor {
-    floorID: number;
+    floorID: string;
     floorInfo: FloorInfo;
 
     static makeLobbyFloor(): Floor {
-        return new Floor(new LobbyFloorInfo(), 0);
+        return new Floor(new LobbyFloorInfo());
     }
 
-    static makeEmptyFloor(floorID: number): Floor {
-        return new Floor(new EmptyFloorInfo(), floorID);
+    static makeEmptyFloor(): Floor {
+        return new Floor(new EmptyFloorInfo());
     }
 
-    constructor(floorInfo: FloorInfo, floorID) {
+    constructor(floorInfo: FloorInfo) {
         this.floorInfo = floorInfo;
-        this.floorID = floorID;
+        this.floorID = Guid.raw();
     }
 
 }

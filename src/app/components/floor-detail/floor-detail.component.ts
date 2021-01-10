@@ -12,11 +12,14 @@ import { FloorType } from 'src/app/models/floor-type.enum';
 })
 export class FloorDetailComponent implements OnInit {
 
+  public floorInfo: FloorInfo = null;
   /**
    * FloorInfo input
    */
   @Input()
-  floorInfo: FloorInfo;
+  set FloorInfo(value: FloorInfo) {
+    this.floorInfo = value;
+  }
 
   constructor() { }
 

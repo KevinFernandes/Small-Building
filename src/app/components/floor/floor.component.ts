@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Floor } from 'src/app/models/floor';
+import { FloorInfo } from 'src/app/models/floor-info';
 
 @Component({
   selector: 'app-floor',
@@ -14,5 +15,9 @@ export class FloorComponent implements OnInit {
   floor: Floor;
 
   ngOnInit(): void {
+  }
+
+  get FloorInfo(): FloorInfo {
+    return this.floor?.floorInfo;
   }
 }
