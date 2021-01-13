@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Store } from '@ngxs/store';
 import { Floor } from 'src/app/models/floor';
 import { FloorInfo } from 'src/app/models/floor-info';
 
@@ -9,12 +10,13 @@ import { FloorInfo } from 'src/app/models/floor-info';
 })
 export class FloorComponent implements OnInit {
 
-  constructor() { }
+  constructor(store: Store) { }
 
   @Input()
   floor: Floor;
 
   ngOnInit(): void {
+
   }
 
   get FloorInfo(): FloorInfo {

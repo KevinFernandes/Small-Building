@@ -2,5 +2,9 @@ export enum FloorType {
     Lobby,
     Empty,
     Residential,
-    Retail
+    Retail,
+    Recreational,
+    Food,
+    Creative,
+    Service
 }

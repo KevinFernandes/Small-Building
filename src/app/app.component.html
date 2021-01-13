@@ -1,7 +1,14 @@
-<div>
-  <app-toolbar></app-toolbar>
-  <div>
-    <div>Floors</div>
-    <app-floor *ngFor="let floor of floors$ | async" [floor]="floor"></app-floor>
+<div class="container-fluid max-h">
+  <app-toolbar ></app-toolbar>
+  <div class="row" style="position: fixed;top: 80px;bottom: 80px;left: 0;right: 0;">
+      <div class="col">
+        <div>Floors</div>
+        <div class="" style="overflow: auto">
+          <app-floor *ngFor="let floor of floors$ | async" [floor]="floor"></app-floor>
+        </div>
+      </div>
+  </div>
+  <div class="row">
+   <div class="col">footer</div>
   </div>
 </div>

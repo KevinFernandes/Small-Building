@@ -1,5 +1,5 @@
 import { Floor } from './floor';
-import { FloorInfo, ResidentialFloorInfo, RetailFloorInfo } from './floor-info';
+import { FloorInfo, RecreationFloorInfo, ResidentialFloorInfo, RetailFloorInfo } from './floor-info';
 import { FloorType } from './floor-type.enum';
 
 export abstract class Floors {
@@ -31,6 +31,7 @@ export abstract class Floors {
 export class AllFloors {
   private static resFloors: Array<FloorInfo> = null;
   private static retailFloors: Array<FloorInfo> = null;
+  private static recreationFloors: Array<FloorInfo> = null;
 
   public static ResidentialFloors(): Array<FloorInfo> {
     if (!this.resFloors) {
@@ -66,6 +67,22 @@ export class AllFloors {
     return this.retailFloors;
   }
 
+  public static RecreationalFloors(): Array<FloorInfo> {
+    if (!this.recreationFloors) {
+      this.recreationFloors = [];
+      this.recreationFloors.push(new RecreationFloorInfo('Recreation 1'));
+      this.recreationFloors.push(new RecreationFloorInfo('Recreation 2'));
+      this.recreationFloors.push(new RecreationFloorInfo('Recreation 3'));
+      this.recreationFloors.push(new RecreationFloorInfo('Recreation 4'));
+      this.recreationFloors.push(new RecreationFloorInfo('Recreation 5'));
+      this.recreationFloors.push(new RecreationFloorInfo('Recreation 6'));
+      this.recreationFloors.push(new RecreationFloorInfo('Recreation 7'));
+      this.recreationFloors.push(new RecreationFloorInfo('Recreation 8'));
+      this.recreationFloors.push(new RecreationFloorInfo('Recreation 9'));
+    }
+
+    return this.recreationFloors;
+  }
 }
 
 export class ResidentialFloors extends Floors {
@@ -82,6 +99,15 @@ export class RetailFloors extends Floors {
     super();
 
     this.floors = AllFloors.RetailFloors();
+  }
+
+}
+
+export class RecreationalFloors extends Floors {
+  constructor() {
+    super();
+
+    this.floors = AllFloors.RecreationalFloors();
   }
 
 }

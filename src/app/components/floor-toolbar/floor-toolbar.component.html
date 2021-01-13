@@ -1,6 +1,19 @@
 <div class="mx-1">
-    <div *ngIf="isEmptyFloor" class="d-flex flex-column">
-        <button (click)="makeResidential()">Residential</button>
-        <button (click)="makeRetail()">Retail</button>
+    <div *ngIf="isBuilding">
+        <button class="btn btn-secondary m-1 flex-fill" (click)="complete()">Complete</button>
     </div>
+    <div *ngIf="!isBuilding">
+        <div *ngIf="isNotLobby" class="d-flex flex-row">
+            <button class="btn btn-secondary m-1 flex-fill" (click)="moveUp()" [class.disabled]="canGoUp">^</button>
+            <button class="btn btn-secondary m-1 flex-fill" (click)="moveDown()" [class.disabled]="canGoDown">v</button>
+        </div>
+        <div *ngIf="isEmptyFloor" class="d-flex flex-row flex-wrap">
+            <button class="btn btn-secondary m-1 flex-fill" (click)="makeResidential()">Res</button>
+            <button class="btn btn-secondary m-1 flex-fill" (click)="makeRetail()">Retail</button>
+            <button class="btn btn-secondary m-1 flex-fill" (click)="makeRecreational()">Rec</button>
+            <button class="btn btn-secondary m-1 flex-fill" (click)="makeFood()">Food</button>
+            <button class="btn btn-secondary m-1 flex-fill" (click)="makeCreative()">Creative</button>
+            <button class="btn btn-secondary m-1 flex-fill" (click)="makeService()">Service</button>
+        </div>
+        </div>
 </div>

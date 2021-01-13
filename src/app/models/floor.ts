@@ -3,6 +3,7 @@ import { EmptyFloorInfo, FloorInfo, LobbyFloorInfo } from './floor-info';
 import { FloorType } from './floor-type.enum';
 
 export class Floor {
+    ID = 0;
     floorID: string;
     floorInfo: FloorInfo;
 
@@ -19,4 +20,13 @@ export class Floor {
         this.floorID = Guid.raw();
     }
 
+    buildFloor(floorInfo: FloorInfo): void {
+        this.floorInfo = floorInfo;
+    }
+
+    complete(): void {
+        if (this.floorInfo) {
+            this.floorInfo.buildStart = null;
+        }
+    }
 }
