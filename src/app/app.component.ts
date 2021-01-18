@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { Floor } from './models/floor';
+import { AppTimerService } from './services/app-timer/app-timer.service';
 import { ApplicationState } from './store/app.state';
 
 @Component({
@@ -11,10 +12,10 @@ import { ApplicationState } from './store/app.state';
 })
 export class AppComponent {
 
+  constructor(timer: AppTimerService) {
+    timer.Timer$.subscribe(() => {});
+  }
+
   @Select(ApplicationState.getAllFloors)
   floors$: Observable<Floor[]>;
-
-  private generateRandom(min: number, max: number): number {
-    return Math.floor(Math.random() * (max - min)) + min;
-  }
 }

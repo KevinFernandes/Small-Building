@@ -1,66 +1,21 @@
-import { FloorInfo } from '../models/floor-info';
+import { FloorType } from '../models/floor-type.enum';
+import { MoveDirection } from '../models/move-direction.enum';
 
-export class MakeResidential {
+export class MakeFloor {
     /**
      * this is required by NGSX?? to identify the action
      */
-    static readonly type = '[floor-toolbar] makeResidential';
+    static readonly type = '[floor-toolbar] makeFloor';
 
-    /**
-     * Default constructor, currently no parameters.
-     */
-    constructor(public floorID: string) {
+    constructor(public floorID: string, public floorType: FloorType) {
     }
 }
 
-export class MakeRetail {
+export class MoveFloor {
     /**
      * this is required by NGSX?? to identify the action
      */
-    static readonly type = '[floor-toolbar] makeRetail';
-
-    /**
-     * Default constructor, currently no parameters.
-     */
-    constructor(public floorID: string) {
-    }
-}
-
-export class MakeRecreational {
-    /**
-     * this is required by NGSX?? to identify the action
-     */
-    static readonly type = '[floor-toolbar] makeRecreational';
-
-    /**
-     * Default constructor, currently no parameters.
-     */
-    constructor(public floorID: string) {
-    }
-}
-
-export class MoveFloorUp {
-    /**
-     * this is required by NGSX?? to identify the action
-     */
-    static readonly type = '[floor-toolbar] moveFloorUp';
-
-    /**
-     * Default constructor, currently no parameters.
-     */
-    constructor(public floorID: string) {
-    }
-}
-
-export class MoveFloorDown{
-    /**
-     * this is required by NGSX?? to identify the action
-     */
-    static readonly type = '[floor-toolbar] moveFloorDown';
-
-    /**
-     * Default constructor, currently no parameters.
-     */
-    constructor(public floorID: string) {
+    static readonly type = '[floor-toolbar] moveFloor';
+    constructor(public floorID: string, public moveDirection: MoveDirection) {
     }
 }

@@ -5,8 +5,9 @@ import {filter, switchMap, takeWhile, tap} from 'rxjs/operators';
 import { Floor } from 'src/app/models/floor';
 
 import { FloorType } from 'src/app/models/floor-type.enum';
+import { MoveDirection } from 'src/app/models/move-direction.enum';
 import { ApplicationState } from 'src/app/store/app.state';
-import { MakeRecreational, MakeResidential, MakeRetail, MoveFloorDown, MoveFloorUp } from 'src/app/store/floor-toolbar.actions';
+import { MakeFloor, MoveFloor } from 'src/app/store/floor-toolbar.actions';
 
 @Component({
   selector: 'app-floor-toolbar',
@@ -20,6 +21,9 @@ export class FloorToolbarComponent implements OnInit, OnDestroy {
   private floorCount = 0;
 
   constructor(private store: Store) { }
+
+  public eFloorType = FloorType;
+  public eMoveDirection = MoveDirection;
 
   @Input()
   set FloorID(value: string) {
@@ -45,7 +49,7 @@ export class FloorToolbarComponent implements OnInit, OnDestroy {
   }
 
   get isBuilding(): boolean {
-    return this.floor?.floorInfo?.buildStart !== null;
+    return this.floor?.floorInfo?.timeRemaining !== 0;
   }
 
   get canGoUp(): boolean {
@@ -53,51 +57,27 @@ export class FloorToolbarComponent implements OnInit, OnDestroy {
   }
 
   get canGoDown(): boolean {
-    return this.floor?.ID + 1 >= this.floorCount;
+    return this.floor?.ID + 1 >= this.floorCount - 1;
   }
 
   get isEmptyFloor(): boolean {
     return this.floor?.floorInfo?.floorType === FloorType.Empty;
   }
 
-  get isNotLobby(): boolean {
-    return this.floor?.floorInfo?.floorType !== FloorType.Lobby;
+  get isNotLobbyTop(): boolean {
+    return this.floor?.floorInfo?.floorType !== FloorType.Lobby && this.floor?.floorInfo?.floorType !== FloorType.Top;
   }
 
   complete(): void {
     this.floor.complete();
   }
 
-  makeRetail(): void {
-    this.store.dispatch(new MakeRetail(this.floorID));
+  makeFloor(floorType: FloorType): void {
+    this.store.dispatch(new MakeFloor(this.floorID, floorType));
   }
 
-  makeResidential(): void {
-    this.store.dispatch(new MakeResidential(this.floorID));
-  }
-
-  makeRecreational(): void {
-    this.store.dispatch(new MakeRecreational(this.floorID));
-  }
-
-  makeService(): void {
-    this.store.dispatch(new MakeRecreational(this.floorID));
-  }
-
-  makeFood(): void {
-    this.store.dispatch(new MakeRecreational(this.floorID));
-  }
-
-  makeCreative(): void {
-    this.store.dispatch(new MakeRecreational(this.floorID));
-  }
-
-  moveUp(): void {
-    this.store.dispatch(new MoveFloorUp(this.floorID));
-  }
-
-  moveDown(): void {
-    this.store.dispatch(new MoveFloorDown(this.floorID));
+  moveFloor(direction: MoveDirection): void {
+    this.store.dispatch(new MoveFloor(this.floorID, direction));
   }
 
 }

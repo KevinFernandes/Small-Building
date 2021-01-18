@@ -1,6 +1,5 @@
 import { Guid } from 'guid-typescript';
-import { EmptyFloorInfo, FloorInfo, LobbyFloorInfo } from './floor-info';
-import { FloorType } from './floor-type.enum';
+import { EmptyFloorInfo, FloorInfo, LobbyFloorInfo, TopFloorInfo } from './floor-info';
 
 export class Floor {
     ID = 0;
@@ -9,6 +8,10 @@ export class Floor {
 
     static makeLobbyFloor(): Floor {
         return new Floor(new LobbyFloorInfo());
+    }
+
+    static makeTopFloor(): Floor {
+        return new Floor(new TopFloorInfo());
     }
 
     static makeEmptyFloor(): Floor {
@@ -20,13 +23,19 @@ export class Floor {
         this.floorID = Guid.raw();
     }
 
+    tick(): void {
+        if (this.floorInfo) {
+            this.floorInfo.tick();
+        }
+    }
+
     buildFloor(floorInfo: FloorInfo): void {
         this.floorInfo = floorInfo;
     }
 
     complete(): void {
         if (this.floorInfo) {
-            this.floorInfo.buildStart = null;
+            this.floorInfo.timeRemaining = 0;
         }
     }
 }

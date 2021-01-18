@@ -1,19 +1,19 @@
 import { Floor } from './floor';
-import { FloorInfo, RecreationFloorInfo, ResidentialFloorInfo, RetailFloorInfo } from './floor-info';
+import { CreativeFloorInfo, FloorInfo, FoodFloorInfo, RecreationFloorInfo, ResidentialFloorInfo, RetailFloorInfo, ServiceFloorInfo } from './floor-info';
 import { FloorType } from './floor-type.enum';
 
 export abstract class Floors {
   public floors: Array<FloorInfo> = [];
-
+  public floorType: FloorType;
+  /**
+   *
+   * @param excludes Array of floor ID to exclude from the random generation
+   */
   public randomFloor(
-    floorType: FloorType,
-    excludes: Array<Floor> = []
+    excludes: Array<string> = []
   ): FloorInfo {
-    const IDs = excludes
-      .filter((floor) => floor.floorInfo.floorType === floorType)
-      .map((floor) => floor.floorInfo.floorId);
     const floors = this.floors.filter(
-      (floorInfo: FloorInfo) => IDs.indexOf(floorInfo.floorId) < 0
+      (floorInfo: FloorInfo) => excludes.indexOf(floorInfo.floorId) < 0
     );
 
     if (!floors || floors.length <= 0) {
@@ -32,6 +32,9 @@ export class AllFloors {
   private static resFloors: Array<FloorInfo> = null;
   private static retailFloors: Array<FloorInfo> = null;
   private static recreationFloors: Array<FloorInfo> = null;
+  private static foodFloors: Array<FloorInfo> = null;
+  private static creativeFloors: Array<FloorInfo> = null;
+  private static serviceFloors: Array<FloorInfo> = null;
 
   public static ResidentialFloors(): Array<FloorInfo> {
     if (!this.resFloors) {
@@ -83,12 +86,63 @@ export class AllFloors {
 
     return this.recreationFloors;
   }
+
+  public static FoodFloors(): Array<FloorInfo> {
+    if (!this.foodFloors) {
+      this.foodFloors = [];
+      this.foodFloors.push(new FoodFloorInfo('Food 1'));
+      this.foodFloors.push(new FoodFloorInfo('Food 2'));
+      this.foodFloors.push(new FoodFloorInfo('Food 3'));
+      this.foodFloors.push(new FoodFloorInfo('Food 4'));
+      this.foodFloors.push(new FoodFloorInfo('Food 5'));
+      this.foodFloors.push(new FoodFloorInfo('Food 6'));
+      this.foodFloors.push(new FoodFloorInfo('Food 7'));
+      this.foodFloors.push(new FoodFloorInfo('Food 8'));
+      this.foodFloors.push(new FoodFloorInfo('Food 9'));
+    }
+
+    return this.foodFloors;
+  }
+
+  public static ServiceFloors(): Array<FloorInfo> {
+    if (!this.serviceFloors) {
+      this.serviceFloors = [];
+      this.serviceFloors.push(new ServiceFloorInfo('Service 1'));
+      this.serviceFloors.push(new ServiceFloorInfo('Service 2'));
+      this.serviceFloors.push(new ServiceFloorInfo('Service 3'));
+      this.serviceFloors.push(new ServiceFloorInfo('Service 4'));
+      this.serviceFloors.push(new ServiceFloorInfo('Service 5'));
+      this.serviceFloors.push(new ServiceFloorInfo('Service 6'));
+      this.serviceFloors.push(new ServiceFloorInfo('Service 7'));
+      this.serviceFloors.push(new ServiceFloorInfo('Service 8'));
+      this.serviceFloors.push(new ServiceFloorInfo('Service 9'));
+    }
+
+    return this.serviceFloors;
+  }
+
+  public static CreativeFloors(): Array<FloorInfo> {
+    if (!this.creativeFloors) {
+      this.creativeFloors = [];
+      this.creativeFloors.push(new CreativeFloorInfo('Creative 1'));
+      this.creativeFloors.push(new CreativeFloorInfo('Creative 2'));
+      this.creativeFloors.push(new CreativeFloorInfo('Creative 3'));
+      this.creativeFloors.push(new CreativeFloorInfo('Creative 4'));
+      this.creativeFloors.push(new CreativeFloorInfo('Creative 5'));
+      this.creativeFloors.push(new CreativeFloorInfo('Creative 6'));
+      this.creativeFloors.push(new CreativeFloorInfo('Creative 7'));
+      this.creativeFloors.push(new CreativeFloorInfo('Creative 8'));
+      this.creativeFloors.push(new CreativeFloorInfo('Creative 9'));
+    }
+
+    return this.creativeFloors;
+  }
 }
 
 export class ResidentialFloors extends Floors {
   constructor() {
     super();
-
+    this.floorType = FloorType.Residential;
     this.floors = AllFloors.ResidentialFloors();
 
   }
@@ -98,6 +152,7 @@ export class RetailFloors extends Floors {
   constructor() {
     super();
 
+    this.floorType = FloorType.Retail;
     this.floors = AllFloors.RetailFloors();
   }
 
@@ -107,7 +162,34 @@ export class RecreationalFloors extends Floors {
   constructor() {
     super();
 
+    this.floorType = FloorType.Recreational;
     this.floors = AllFloors.RecreationalFloors();
   }
+}
 
+export class FoodFloors extends Floors {
+  constructor() {
+    super();
+
+    this.floorType = FloorType.Food;
+    this.floors = AllFloors.FoodFloors();
+  }
+}
+
+export class ServiceFloors extends Floors {
+  constructor() {
+    super();
+
+    this.floorType = FloorType.Service;
+    this.floors = AllFloors.ServiceFloors();
+  }
+}
+
+export class CreativeFloors extends Floors {
+  constructor() {
+    super();
+
+    this.floorType = FloorType.Creative;
+    this.floors = AllFloors.CreativeFloors();
+  }
 }

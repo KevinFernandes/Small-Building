@@ -9,6 +9,7 @@ import { ApplicationState } from './store/app.state';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FloorDetailComponent } from './components/floor-detail/floor-detail.component';
 import { FloorToolbarComponent } from './components/floor-toolbar/floor-toolbar.component';
+import { AppTimerService } from './services/app-timer/app-timer.service';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,7 @@ import { FloorToolbarComponent } from './components/floor-toolbar/floor-toolbar.
     NgxsModule.forRoot([ApplicationState]),
     NgbModule
   ],
-  providers: [],
+  providers: [AppTimerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -13,6 +13,7 @@ import { FloorType } from 'src/app/models/floor-type.enum';
 export class FloorDetailComponent implements OnInit {
 
   public floorInfo: FloorInfo = null;
+
   /**
    * FloorInfo input
    */
@@ -22,11 +23,11 @@ export class FloorDetailComponent implements OnInit {
   }
 
   get isBuilding(): boolean {
-    return this.floorInfo?.buildStart !== null;
+    return this.floorInfo?.timeRemaining !== 0;
   }
 
   get isNotBuilding(): boolean {
-    return this.floorInfo?.buildStart === null;
+    return this.floorInfo?.timeRemaining === 0;
   }
 
   get isLobby(): boolean {
@@ -44,10 +45,11 @@ export class FloorDetailComponent implements OnInit {
   }
 
   get isBusy(): boolean {
-    return this.floorInfo?.buildStart !== null;
+    return this.floorInfo?.timeRemaining !== 0;
   }
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }

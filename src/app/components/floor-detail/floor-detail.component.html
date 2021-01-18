@@ -1,12 +1,12 @@
 <div class="d-flex flex-column w-100 h-100 border">
-    <div class="d-flex flex-row pr-2" style="background-color: darkslategray;">
-        <div class="d-flex flex-row justify-content-start" style="min-width: 25%; max-width: 25%;">
+    <div class="d-flex flex-row pr-2" style="background-color: darkslategray; min-height: 24px">
+        <div class="d-flex flex-row justify-content-start" style="min-width: 20%; max-width: 20%;">
             <div *ngFor="let slot of floorInfo?.slots" class="m-1 p-2" style="border-radius: 8px" [style.background-color]="occupied(slot)"></div>
         </div>
         
         <div *ngIf="isBuilding" class="flex-grow-1" [style.color]="labelColor()">Coming Soon...</div>
         <div *ngIf="isNotBuilding" class="flex-grow-1" [style.color]="labelColor()">{{floorInfo?.floorName}}</div>
-        <div *ngIf="!isLobby && !isEmpty && isBusy" style="color: white;">Time: {{floorInfo?.buildStart | date: 'h:mm:ss' }}</div>
+        <div *ngIf="!isLobby && !isEmpty && isBusy" style="color: white;">Time: {{floorInfo?.timeRemaining}}</div>
     </div>
     <div class="flex-grow-1"></div>
 </div>
