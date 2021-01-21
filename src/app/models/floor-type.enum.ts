@@ -1,11 +1,11 @@
 export enum FloorType {
-    Lobby,
-    Top,
-    Empty,
-    Residential,
-    Retail,
-    Recreational,
-    Food,
-    Creative,
-    Service
+    Lobby = 'lobby',
+    Top = 'top',
+    Empty = 'empty',
+    Residential = 'residential',
+    Retail = 'retail',
+    Recreational = 'recreational',
+    Food = 'food',
+    Creative = 'creative',
+    Service = 'service'
 }

@@ -1,7 +1,15 @@
 
+export enum SlotState {
+    Occupied = 'occupied',
+    Unoccupied = 'unoccupied',
+    Empty = 'empty',
+    Filling = 'filling',
+    Full = 'full'
+}
+
 export class FloorSlot {
-    occupied: boolean;
-    constructor() {
-        this.occupied = false;
+    occupied: SlotState;
+    constructor(state: SlotState) {
+        this.occupied = state;
     }
 }

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FloorInfo } from 'src/app/models/floor-info';
-import { FloorSlot } from 'src/app/models/floor-slot';
+import { FloorSlot, SlotState } from 'src/app/models/floor-slot';
 import { FloorType } from 'src/app/models/floor-type.enum';
 /**
  * This is a detail floor component
@@ -55,7 +55,13 @@ export class FloorDetailComponent implements OnInit {
   }
 
   occupied(slot: FloorSlot): string {
-    return slot.occupied ? 'green' : 'gray';
+    switch (slot.occupied) {
+      case SlotState.Occupied: return 'silver';
+      case SlotState.Empty: return 'red';
+      case SlotState.Filling: return 'yellow';
+      case SlotState.Full: return 'lightgreen';
+      default: return 'gray'; //  For unknown type and SlotType.Unoccupied
+    }
   }
 
   labelColor(): string {
