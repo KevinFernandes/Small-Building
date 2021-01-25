@@ -4,7 +4,7 @@
       <div class="col">
         <div>Floors</div>
         <div class="" style="overflow: auto">
-          <app-floor *ngFor="let floor of floors$ | async" [floor]="floor"></app-floor>
+          <app-floor *ngFor="let floor of floors$ | async" [floor]="floor" [floorCount]="(floors$ | async).length"></app-floor>
         </div>
       </div>
   </div>

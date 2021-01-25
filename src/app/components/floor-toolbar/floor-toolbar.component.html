@@ -6,30 +6,30 @@
     </div>
     <div *ngIf="!isBuilding">
         <div *ngIf="isNotLobbyTop" class="d-flex flex-row">
-            <button class="btn btn-secondary m-1 flex-fill" (click)="moveFloor(eMoveDirection.Up)" [class.disabled]="canGoUp">
+            <button class="btn btn-secondary m-1 flex-fill" (click)="MoveFloor(eMoveDirection.Up)" [class.disabled]="canGoUp">
                 ^
             </button>
-            <button class="btn btn-secondary m-1 flex-fill" (click)="moveFloor(eMoveDirection.Down)" [class.disabled]="canGoDown">
+            <button class="btn btn-secondary m-1 flex-fill" (click)="MoveFloor(eMoveDirection.Down)" [class.disabled]="canGoDown">
                 v
             </button>
         </div>
         <div *ngIf="isEmptyFloor" class="d-flex flex-row flex-wrap">
-            <button class="btn btn-secondary m-1 flex-fill" (click)="makeFloor(eFloorType.Residential)">
+            <button class="btn btn-secondary m-1 flex-fill" (click)="MakeFloor(eFloorType.Residential)">
                 Res
             </button>
-            <button class="btn btn-secondary m-1 flex-fill" (click)="makeFloor(eFloorType.Retail)">
+            <button class="btn btn-secondary m-1 flex-fill" (click)="MakeFloor(eFloorType.Retail)">
                 Retail
             </button>
-            <button class="btn btn-secondary m-1 flex-fill" (click)="makeFloor(eFloorType.Recreational)">
+            <button class="btn btn-secondary m-1 flex-fill" (click)="MakeFloor(eFloorType.Recreational)">
                 Rec
             </button>
-            <button class="btn btn-secondary m-1 flex-fill" (click)="makeFloor(eFloorType.Food)">
+            <button class="btn btn-secondary m-1 flex-fill" (click)="MakeFloor(eFloorType.Food)">
                 Food
             </button>
-            <button class="btn btn-secondary m-1 flex-fill" (click)="makeFloor(eFloorType.Creative)">
+            <button class="btn btn-secondary m-1 flex-fill" (click)="MakeFloor(eFloorType.Creative)">
                 Creat
             </button>
-            <button class="btn btn-secondary m-1 flex-fill" (click)="makeFloor(eFloorType.Service)">
+            <button class="btn btn-secondary m-1 flex-fill" (click)="MakeFloor(eFloorType.Service)">
                 Serv
             </button>
         </div>

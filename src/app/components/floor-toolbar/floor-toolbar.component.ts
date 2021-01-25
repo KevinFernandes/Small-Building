@@ -1,13 +1,9 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Store } from '@ngxs/store';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 
-import {filter, switchMap, takeWhile, tap} from 'rxjs/operators';
 import { Floor } from 'src/app/models/floor';
 
 import { FloorType } from 'src/app/models/floor-type.enum';
 import { MoveDirection } from 'src/app/models/move-direction.enum';
-import { ApplicationState } from 'src/app/store/app.state';
-import { MakeFloor, MoveFloor } from 'src/app/store/floor-toolbar.actions';
 
 @Component({
   selector: 'app-floor-toolbar',
@@ -15,37 +11,42 @@ import { MakeFloor, MoveFloor } from 'src/app/store/floor-toolbar.actions';
   styleUrls: ['./floor-toolbar.component.css']
 })
 export class FloorToolbarComponent implements OnInit, OnDestroy {
-  private floorID: string;
   private floor: Floor;
-  private destroy = false;
   private floorCount = 0;
 
-  constructor(private store: Store) { }
+  private makeFloor: EventEmitter<FloorType> = new EventEmitter();
+  private moveFloor: EventEmitter<MoveDirection> = new EventEmitter();
 
+  constructor() { }
+
+  //  made public for use in the HTML template
   public eFloorType = FloorType;
   public eMoveDirection = MoveDirection;
 
   @Input()
-  set FloorID(value: string) {
-    this.floorID = value;
+  set Floor(value: Floor) {
+    this.floor = value;
+  }
 
-    this.store.select(ApplicationState.getAllFloors)
-      .pipe(
-        takeWhile(() => !this.destroy),
-        tap(val => this.floorCount = val.length),
-        switchMap(val => val),
-        filter(val => val.floorID === this.floorID)
-      )
-      .subscribe(val => {
-        this.floor = val;
-      });
+  @Input()
+  set FloorCount(value: number) {
+    this.floorCount = value;
+  }
+
+  @Output()
+  get MakeFloor$(): EventEmitter<FloorType> {
+    return this.makeFloor;
+  }
+
+  @Output()
+  get MoveFloor$(): EventEmitter<MoveDirection> {
+    return this.moveFloor;
   }
 
   ngOnInit(): void {
   }
 
   ngOnDestroy(): void {
-    this.destroy = true;
   }
 
   get isBuilding(): boolean {
@@ -72,12 +73,12 @@ export class FloorToolbarComponent implements OnInit, OnDestroy {
     this.floor.complete();
   }
 
-  makeFloor(floorType: FloorType): void {
-    this.store.dispatch(new MakeFloor(this.floorID, floorType));
+  MakeFloor(floorType: FloorType): void {
+    this.makeFloor.emit(floorType);
   }
 
-  moveFloor(direction: MoveDirection): void {
-    this.store.dispatch(new MoveFloor(this.floorID, direction));
+  MoveFloor(direction: MoveDirection): void {
+    this.moveFloor.emit(direction);
   }
 
 }

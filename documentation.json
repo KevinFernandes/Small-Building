@@ -3,10 +3,10 @@
     "interfaces": [
         {
             "name": "IFloorInfo",
-            "id": "interface-IFloorInfo-1ffcaad6bafd8cb05e666f48b5f09cda",
+            "id": "interface-IFloorInfo-04cf06d4e3d0e13b10a37a38cda5734d",
             "file": "src/app/models/floor-info.ts",
             "type": "interface",
-            "sourceCode": "import { Guid } from 'guid-typescript';\r\nimport { FloorSlot } from './floor-slot';\r\nimport { FloorType } from './floor-type.enum';\r\n\r\nexport interface IFloorInfo {\r\n    floorName: string;\r\n    floorType: FloorType;\r\n    slots: Array<FloorSlot>;\r\n}\r\n\r\nexport abstract class FloorInfo implements IFloorInfo {\r\n    floorId: string;\r\n    floorName: string;\r\n    floorType: FloorType;\r\n    slots: Array<FloorSlot>;\r\n    buildTime: Date;\r\n    timeRemaining: number;\r\n\r\n    constructor(floorName: string, floorType: FloorType, slots: number) {\r\n        this.floorId = Guid.raw();\r\n        this.floorName = floorName;\r\n        this.floorType = floorType;\r\n        this.slots = [];\r\n        this.timeRemaining = 3000; // 30 seconds\r\n\r\n        for (let i = 0; i < slots; ++i) {\r\n            this.slots.push(new FloorSlot());\r\n        }\r\n    }\r\n\r\n    public tick(): void {\r\n        if (this.timeRemaining > 0) {\r\n            this.timeRemaining -= 1;\r\n        }\r\n    }\r\n}\r\n\r\nexport class LobbyFloorInfo extends FloorInfo {\r\n    constructor() {\r\n        super('Lobby', FloorType.Lobby, 0);\r\n        this.timeRemaining = 0;\r\n    }\r\n}\r\n\r\nexport class TopFloorInfo extends FloorInfo {\r\n    constructor() {\r\n        super('', FloorType.Top, 0);\r\n        this.timeRemaining = 0;\r\n    }\r\n}\r\n\r\nexport class EmptyFloorInfo extends FloorInfo {\r\n    constructor() {\r\n        super('Empty floor', FloorType.Empty, 0);\r\n        this.timeRemaining = 0;\r\n    }\r\n}\r\n\r\nexport class ResidentialFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Residential, 5);\r\n    }\r\n}\r\n\r\nexport class RetailFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Retail, 3);\r\n    }\r\n}\r\n\r\nexport class RecreationFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Recreational, 3);\r\n    }\r\n}\r\n\r\nexport class ServiceFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Service, 3);\r\n    }\r\n}\r\n\r\nexport class FoodFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Food, 3);\r\n    }\r\n}\r\n\r\nexport class CreativeFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Creative, 3);\r\n    }\r\n}\r\n",
+            "sourceCode": "import { Guid } from 'guid-typescript';\r\nimport { FloorSlot, SlotState } from './floor-slot';\r\nimport { FloorType } from './floor-type.enum';\r\n\r\nexport interface IFloorInfo {\r\n  floorName: string;\r\n  floorType: FloorType;\r\n  slots: Array<FloorSlot>;\r\n}\r\n\r\nexport abstract class FloorInfo implements IFloorInfo {\r\n  floorId: string;\r\n  floorName: string;\r\n  floorType: FloorType;\r\n  slots: Array<FloorSlot>;\r\n  buildTime: Date;\r\n  timeRemaining: number;\r\n\r\n  constructor(floorName: string, floorType: FloorType) {\r\n    this.floorId = Guid.raw();\r\n    this.floorName = floorName;\r\n    this.floorType = floorType;\r\n    this.slots = [];\r\n    this.timeRemaining = 3000; // 30 seconds\r\n  }\r\n\r\n  public tick(): void {\r\n    if (this.timeRemaining > 0) {\r\n      this.timeRemaining -= 1;\r\n    }\r\n  }\r\n}\r\n\r\nexport class LobbyFloorInfo extends FloorInfo {\r\n  constructor() {\r\n    super('Lobby', FloorType.Lobby);\r\n    this.timeRemaining = 0;\r\n  }\r\n}\r\n\r\nexport class TopFloorInfo extends FloorInfo {\r\n  constructor() {\r\n    super('', FloorType.Top);\r\n    this.timeRemaining = 0;\r\n  }\r\n}\r\n\r\nexport class EmptyFloorInfo extends FloorInfo {\r\n  constructor() {\r\n    super('Empty floor', FloorType.Empty);\r\n    this.timeRemaining = 0;\r\n  }\r\n}\r\n\r\nexport class ResidentialFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Residential);\r\n\r\n    for (let i = 0; i < 5; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Unoccupied));\r\n    }\r\n  }\r\n}\r\n\r\nexport class RetailFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Retail);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class RecreationFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Recreational);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class ServiceFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Service);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class FoodFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Food);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class CreativeFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Creative);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n",
             "properties": [
                 {
                     "name": "floorName",
@@ -413,6 +413,103 @@
                 }
             },
             "type": "injectable"
+        },
+        {
+            "name": "FloorManagerService",
+            "id": "injectable-FloorManagerService-ef05f4ecb5dcf6be2e094f41fdc700d3",
+            "file": "src/app/services/floor-manager/floor-manager.service.ts",
+            "properties": [],
+            "methods": [
+                {
+                    "name": "MakeFloor",
+                    "args": [
+                        {
+                            "name": "floorId",
+                            "type": "string"
+                        },
+                        {
+                            "name": "floorType",
+                            "type": "FloorType"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 14,
+                    "jsdoctags": [
+                        {
+                            "name": "floorId",
+                            "type": "string",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "floorType",
+                            "type": "FloorType",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "MoveFloor",
+                    "args": [
+                        {
+                            "name": "floorId",
+                            "type": "string"
+                        },
+                        {
+                            "name": "direction",
+                            "type": "MoveDirection"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 18,
+                    "jsdoctags": [
+                        {
+                            "name": "floorId",
+                            "type": "string",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "direction",
+                            "type": "MoveDirection",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "description": "",
+            "sourceCode": "import { Injectable } from '@angular/core';\nimport { Store } from '@ngxs/store';\nimport { FloorType } from 'src/app/models/floor-type.enum';\nimport { MoveDirection } from 'src/app/models/move-direction.enum';\nimport { MakeFloor, MoveFloor } from 'src/app/store/floor-toolbar.actions';\n\n@Injectable({\n  providedIn: 'root'\n})\nexport class FloorManagerService {\n\n  constructor(private store: Store) { }\n\n  MakeFloor(floorId: string, floorType: FloorType): void {\n    this.store.dispatch(new MakeFloor(floorId, floorType));\n  }\n\n  MoveFloor(floorId: string, direction: MoveDirection): void {\n    this.store.dispatch(new MoveFloor(floorId, direction));\n  }\n}\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [
+                    {
+                        "name": "store",
+                        "type": "Store"
+                    }
+                ],
+                "line": 10,
+                "jsdoctags": [
+                    {
+                        "name": "store",
+                        "type": "Store",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "type": "injectable"
         }
     ],
     "classes": [
@@ -669,10 +766,10 @@
         },
         {
             "name": "CreativeFloorInfo",
-            "id": "class-CreativeFloorInfo-1ffcaad6bafd8cb05e666f48b5f09cda",
+            "id": "class-CreativeFloorInfo-04cf06d4e3d0e13b10a37a38cda5734d",
             "file": "src/app/models/floor-info.ts",
             "type": "class",
-            "sourceCode": "import { Guid } from 'guid-typescript';\r\nimport { FloorSlot } from './floor-slot';\r\nimport { FloorType } from './floor-type.enum';\r\n\r\nexport interface IFloorInfo {\r\n    floorName: string;\r\n    floorType: FloorType;\r\n    slots: Array<FloorSlot>;\r\n}\r\n\r\nexport abstract class FloorInfo implements IFloorInfo {\r\n    floorId: string;\r\n    floorName: string;\r\n    floorType: FloorType;\r\n    slots: Array<FloorSlot>;\r\n    buildTime: Date;\r\n    timeRemaining: number;\r\n\r\n    constructor(floorName: string, floorType: FloorType, slots: number) {\r\n        this.floorId = Guid.raw();\r\n        this.floorName = floorName;\r\n        this.floorType = floorType;\r\n        this.slots = [];\r\n        this.timeRemaining = 3000; // 30 seconds\r\n\r\n        for (let i = 0; i < slots; ++i) {\r\n            this.slots.push(new FloorSlot());\r\n        }\r\n    }\r\n\r\n    public tick(): void {\r\n        if (this.timeRemaining > 0) {\r\n            this.timeRemaining -= 1;\r\n        }\r\n    }\r\n}\r\n\r\nexport class LobbyFloorInfo extends FloorInfo {\r\n    constructor() {\r\n        super('Lobby', FloorType.Lobby, 0);\r\n        this.timeRemaining = 0;\r\n    }\r\n}\r\n\r\nexport class TopFloorInfo extends FloorInfo {\r\n    constructor() {\r\n        super('', FloorType.Top, 0);\r\n        this.timeRemaining = 0;\r\n    }\r\n}\r\n\r\nexport class EmptyFloorInfo extends FloorInfo {\r\n    constructor() {\r\n        super('Empty floor', FloorType.Empty, 0);\r\n        this.timeRemaining = 0;\r\n    }\r\n}\r\n\r\nexport class ResidentialFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Residential, 5);\r\n    }\r\n}\r\n\r\nexport class RetailFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Retail, 3);\r\n    }\r\n}\r\n\r\nexport class RecreationFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Recreational, 3);\r\n    }\r\n}\r\n\r\nexport class ServiceFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Service, 3);\r\n    }\r\n}\r\n\r\nexport class FoodFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Food, 3);\r\n    }\r\n}\r\n\r\nexport class CreativeFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Creative, 3);\r\n    }\r\n}\r\n",
+            "sourceCode": "import { Guid } from 'guid-typescript';\r\nimport { FloorSlot, SlotState } from './floor-slot';\r\nimport { FloorType } from './floor-type.enum';\r\n\r\nexport interface IFloorInfo {\r\n  floorName: string;\r\n  floorType: FloorType;\r\n  slots: Array<FloorSlot>;\r\n}\r\n\r\nexport abstract class FloorInfo implements IFloorInfo {\r\n  floorId: string;\r\n  floorName: string;\r\n  floorType: FloorType;\r\n  slots: Array<FloorSlot>;\r\n  buildTime: Date;\r\n  timeRemaining: number;\r\n\r\n  constructor(floorName: string, floorType: FloorType) {\r\n    this.floorId = Guid.raw();\r\n    this.floorName = floorName;\r\n    this.floorType = floorType;\r\n    this.slots = [];\r\n    this.timeRemaining = 3000; // 30 seconds\r\n  }\r\n\r\n  public tick(): void {\r\n    if (this.timeRemaining > 0) {\r\n      this.timeRemaining -= 1;\r\n    }\r\n  }\r\n}\r\n\r\nexport class LobbyFloorInfo extends FloorInfo {\r\n  constructor() {\r\n    super('Lobby', FloorType.Lobby);\r\n    this.timeRemaining = 0;\r\n  }\r\n}\r\n\r\nexport class TopFloorInfo extends FloorInfo {\r\n  constructor() {\r\n    super('', FloorType.Top);\r\n    this.timeRemaining = 0;\r\n  }\r\n}\r\n\r\nexport class EmptyFloorInfo extends FloorInfo {\r\n  constructor() {\r\n    super('Empty floor', FloorType.Empty);\r\n    this.timeRemaining = 0;\r\n  }\r\n}\r\n\r\nexport class ResidentialFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Residential);\r\n\r\n    for (let i = 0; i < 5; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Unoccupied));\r\n    }\r\n  }\r\n}\r\n\r\nexport class RetailFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Retail);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class RecreationFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Recreational);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class ServiceFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Service);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class FoodFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Food);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class CreativeFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Creative);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -682,7 +779,7 @@
                         "type": "string"
                     }
                 ],
-                "line": 89,
+                "line": 105,
                 "jsdoctags": [
                     {
                         "name": "floorName",
@@ -762,7 +859,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 31,
+                    "line": 27,
                     "modifierKind": [
                         114
                     ],
@@ -909,15 +1006,15 @@
         },
         {
             "name": "EmptyFloorInfo",
-            "id": "class-EmptyFloorInfo-1ffcaad6bafd8cb05e666f48b5f09cda",
+            "id": "class-EmptyFloorInfo-04cf06d4e3d0e13b10a37a38cda5734d",
             "file": "src/app/models/floor-info.ts",
             "type": "class",
-            "sourceCode": "import { Guid } from 'guid-typescript';\r\nimport { FloorSlot } from './floor-slot';\r\nimport { FloorType } from './floor-type.enum';\r\n\r\nexport interface IFloorInfo {\r\n    floorName: string;\r\n    floorType: FloorType;\r\n    slots: Array<FloorSlot>;\r\n}\r\n\r\nexport abstract class FloorInfo implements IFloorInfo {\r\n    floorId: string;\r\n    floorName: string;\r\n    floorType: FloorType;\r\n    slots: Array<FloorSlot>;\r\n    buildTime: Date;\r\n    timeRemaining: number;\r\n\r\n    constructor(floorName: string, floorType: FloorType, slots: number) {\r\n        this.floorId = Guid.raw();\r\n        this.floorName = floorName;\r\n        this.floorType = floorType;\r\n        this.slots = [];\r\n        this.timeRemaining = 3000; // 30 seconds\r\n\r\n        for (let i = 0; i < slots; ++i) {\r\n            this.slots.push(new FloorSlot());\r\n        }\r\n    }\r\n\r\n    public tick(): void {\r\n        if (this.timeRemaining > 0) {\r\n            this.timeRemaining -= 1;\r\n        }\r\n    }\r\n}\r\n\r\nexport class LobbyFloorInfo extends FloorInfo {\r\n    constructor() {\r\n        super('Lobby', FloorType.Lobby, 0);\r\n        this.timeRemaining = 0;\r\n    }\r\n}\r\n\r\nexport class TopFloorInfo extends FloorInfo {\r\n    constructor() {\r\n        super('', FloorType.Top, 0);\r\n        this.timeRemaining = 0;\r\n    }\r\n}\r\n\r\nexport class EmptyFloorInfo extends FloorInfo {\r\n    constructor() {\r\n        super('Empty floor', FloorType.Empty, 0);\r\n        this.timeRemaining = 0;\r\n    }\r\n}\r\n\r\nexport class ResidentialFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Residential, 5);\r\n    }\r\n}\r\n\r\nexport class RetailFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Retail, 3);\r\n    }\r\n}\r\n\r\nexport class RecreationFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Recreational, 3);\r\n    }\r\n}\r\n\r\nexport class ServiceFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Service, 3);\r\n    }\r\n}\r\n\r\nexport class FoodFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Food, 3);\r\n    }\r\n}\r\n\r\nexport class CreativeFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Creative, 3);\r\n    }\r\n}\r\n",
+            "sourceCode": "import { Guid } from 'guid-typescript';\r\nimport { FloorSlot, SlotState } from './floor-slot';\r\nimport { FloorType } from './floor-type.enum';\r\n\r\nexport interface IFloorInfo {\r\n  floorName: string;\r\n  floorType: FloorType;\r\n  slots: Array<FloorSlot>;\r\n}\r\n\r\nexport abstract class FloorInfo implements IFloorInfo {\r\n  floorId: string;\r\n  floorName: string;\r\n  floorType: FloorType;\r\n  slots: Array<FloorSlot>;\r\n  buildTime: Date;\r\n  timeRemaining: number;\r\n\r\n  constructor(floorName: string, floorType: FloorType) {\r\n    this.floorId = Guid.raw();\r\n    this.floorName = floorName;\r\n    this.floorType = floorType;\r\n    this.slots = [];\r\n    this.timeRemaining = 3000; // 30 seconds\r\n  }\r\n\r\n  public tick(): void {\r\n    if (this.timeRemaining > 0) {\r\n      this.timeRemaining -= 1;\r\n    }\r\n  }\r\n}\r\n\r\nexport class LobbyFloorInfo extends FloorInfo {\r\n  constructor() {\r\n    super('Lobby', FloorType.Lobby);\r\n    this.timeRemaining = 0;\r\n  }\r\n}\r\n\r\nexport class TopFloorInfo extends FloorInfo {\r\n  constructor() {\r\n    super('', FloorType.Top);\r\n    this.timeRemaining = 0;\r\n  }\r\n}\r\n\r\nexport class EmptyFloorInfo extends FloorInfo {\r\n  constructor() {\r\n    super('Empty floor', FloorType.Empty);\r\n    this.timeRemaining = 0;\r\n  }\r\n}\r\n\r\nexport class ResidentialFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Residential);\r\n\r\n    for (let i = 0; i < 5; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Unoccupied));\r\n    }\r\n  }\r\n}\r\n\r\nexport class RetailFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Retail);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class RecreationFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Recreational);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class ServiceFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Service);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class FoodFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Food);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class CreativeFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Creative);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
                 "args": [],
-                "line": 52
+                "line": 48
             },
             "properties": [
                 {
@@ -988,7 +1085,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 31,
+                    "line": 27,
                     "modifierKind": [
                         114
                     ],
@@ -1135,10 +1232,10 @@
         },
         {
             "name": "FloorInfo",
-            "id": "class-FloorInfo-1ffcaad6bafd8cb05e666f48b5f09cda",
+            "id": "class-FloorInfo-04cf06d4e3d0e13b10a37a38cda5734d",
             "file": "src/app/models/floor-info.ts",
             "type": "class",
-            "sourceCode": "import { Guid } from 'guid-typescript';\r\nimport { FloorSlot } from './floor-slot';\r\nimport { FloorType } from './floor-type.enum';\r\n\r\nexport interface IFloorInfo {\r\n    floorName: string;\r\n    floorType: FloorType;\r\n    slots: Array<FloorSlot>;\r\n}\r\n\r\nexport abstract class FloorInfo implements IFloorInfo {\r\n    floorId: string;\r\n    floorName: string;\r\n    floorType: FloorType;\r\n    slots: Array<FloorSlot>;\r\n    buildTime: Date;\r\n    timeRemaining: number;\r\n\r\n    constructor(floorName: string, floorType: FloorType, slots: number) {\r\n        this.floorId = Guid.raw();\r\n        this.floorName = floorName;\r\n        this.floorType = floorType;\r\n        this.slots = [];\r\n        this.timeRemaining = 3000; // 30 seconds\r\n\r\n        for (let i = 0; i < slots; ++i) {\r\n            this.slots.push(new FloorSlot());\r\n        }\r\n    }\r\n\r\n    public tick(): void {\r\n        if (this.timeRemaining > 0) {\r\n            this.timeRemaining -= 1;\r\n        }\r\n    }\r\n}\r\n\r\nexport class LobbyFloorInfo extends FloorInfo {\r\n    constructor() {\r\n        super('Lobby', FloorType.Lobby, 0);\r\n        this.timeRemaining = 0;\r\n    }\r\n}\r\n\r\nexport class TopFloorInfo extends FloorInfo {\r\n    constructor() {\r\n        super('', FloorType.Top, 0);\r\n        this.timeRemaining = 0;\r\n    }\r\n}\r\n\r\nexport class EmptyFloorInfo extends FloorInfo {\r\n    constructor() {\r\n        super('Empty floor', FloorType.Empty, 0);\r\n        this.timeRemaining = 0;\r\n    }\r\n}\r\n\r\nexport class ResidentialFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Residential, 5);\r\n    }\r\n}\r\n\r\nexport class RetailFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Retail, 3);\r\n    }\r\n}\r\n\r\nexport class RecreationFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Recreational, 3);\r\n    }\r\n}\r\n\r\nexport class ServiceFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Service, 3);\r\n    }\r\n}\r\n\r\nexport class FoodFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Food, 3);\r\n    }\r\n}\r\n\r\nexport class CreativeFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Creative, 3);\r\n    }\r\n}\r\n",
+            "sourceCode": "import { Guid } from 'guid-typescript';\r\nimport { FloorSlot, SlotState } from './floor-slot';\r\nimport { FloorType } from './floor-type.enum';\r\n\r\nexport interface IFloorInfo {\r\n  floorName: string;\r\n  floorType: FloorType;\r\n  slots: Array<FloorSlot>;\r\n}\r\n\r\nexport abstract class FloorInfo implements IFloorInfo {\r\n  floorId: string;\r\n  floorName: string;\r\n  floorType: FloorType;\r\n  slots: Array<FloorSlot>;\r\n  buildTime: Date;\r\n  timeRemaining: number;\r\n\r\n  constructor(floorName: string, floorType: FloorType) {\r\n    this.floorId = Guid.raw();\r\n    this.floorName = floorName;\r\n    this.floorType = floorType;\r\n    this.slots = [];\r\n    this.timeRemaining = 3000; // 30 seconds\r\n  }\r\n\r\n  public tick(): void {\r\n    if (this.timeRemaining > 0) {\r\n      this.timeRemaining -= 1;\r\n    }\r\n  }\r\n}\r\n\r\nexport class LobbyFloorInfo extends FloorInfo {\r\n  constructor() {\r\n    super('Lobby', FloorType.Lobby);\r\n    this.timeRemaining = 0;\r\n  }\r\n}\r\n\r\nexport class TopFloorInfo extends FloorInfo {\r\n  constructor() {\r\n    super('', FloorType.Top);\r\n    this.timeRemaining = 0;\r\n  }\r\n}\r\n\r\nexport class EmptyFloorInfo extends FloorInfo {\r\n  constructor() {\r\n    super('Empty floor', FloorType.Empty);\r\n    this.timeRemaining = 0;\r\n  }\r\n}\r\n\r\nexport class ResidentialFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Residential);\r\n\r\n    for (let i = 0; i < 5; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Unoccupied));\r\n    }\r\n  }\r\n}\r\n\r\nexport class RetailFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Retail);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class RecreationFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Recreational);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class ServiceFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Service);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class FoodFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Food);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class CreativeFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Creative);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -1150,10 +1247,6 @@
                     {
                         "name": "floorType",
                         "type": "FloorType"
-                    },
-                    {
-                        "name": "slots",
-                        "type": "number"
                     }
                 ],
                 "line": 17,
@@ -1168,13 +1261,6 @@
                     {
                         "name": "floorType",
                         "type": "FloorType",
-                        "tagName": {
-                            "text": "param"
-                        }
-                    },
-                    {
-                        "name": "slots",
-                        "type": "number",
                         "tagName": {
                             "text": "param"
                         }
@@ -1232,7 +1318,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 31,
+                    "line": 27,
                     "modifierKind": [
                         114
                     ]
@@ -1359,23 +1445,37 @@
         },
         {
             "name": "FloorSlot",
-            "id": "class-FloorSlot-afe775a2f1c8c40f972a0245bb21834c",
+            "id": "class-FloorSlot-cab30d46fc0cdfbcf418be28f97ae8a0",
             "file": "src/app/models/floor-slot.ts",
             "type": "class",
-            "sourceCode": "export class FloorSlot {\r\n    occupied: boolean;\r\n    constructor() {\r\n        this.occupied = false;\r\n    }\r\n}\r\n",
+            "sourceCode": "export enum SlotState {\r\n    Occupied = 'occupied',\r\n    Unoccupied = 'unoccupied',\r\n    Empty = 'empty',\r\n    Filling = 'filling',\r\n    Full = 'full'\r\n}\r\n\r\nexport class FloorSlot {\r\n    occupied: SlotState;\r\n    constructor(state: SlotState) {\r\n        this.occupied = state;\r\n    }\r\n}\r\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
-                "args": [],
-                "line": 3
+                "args": [
+                    {
+                        "name": "state",
+                        "type": "SlotState"
+                    }
+                ],
+                "line": 11,
+                "jsdoctags": [
+                    {
+                        "name": "state",
+                        "type": "SlotState",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
             },
             "properties": [
                 {
                     "name": "occupied",
-                    "type": "boolean",
+                    "type": "SlotState",
                     "optional": false,
                     "description": "",
-                    "line": 3
+                    "line": 11
                 }
             ],
             "methods": [],
@@ -1387,10 +1487,10 @@
         },
         {
             "name": "FoodFloorInfo",
-            "id": "class-FoodFloorInfo-1ffcaad6bafd8cb05e666f48b5f09cda",
+            "id": "class-FoodFloorInfo-04cf06d4e3d0e13b10a37a38cda5734d",
             "file": "src/app/models/floor-info.ts",
             "type": "class",
-            "sourceCode": "import { Guid } from 'guid-typescript';\r\nimport { FloorSlot } from './floor-slot';\r\nimport { FloorType } from './floor-type.enum';\r\n\r\nexport interface IFloorInfo {\r\n    floorName: string;\r\n    floorType: FloorType;\r\n    slots: Array<FloorSlot>;\r\n}\r\n\r\nexport abstract class FloorInfo implements IFloorInfo {\r\n    floorId: string;\r\n    floorName: string;\r\n    floorType: FloorType;\r\n    slots: Array<FloorSlot>;\r\n    buildTime: Date;\r\n    timeRemaining: number;\r\n\r\n    constructor(floorName: string, floorType: FloorType, slots: number) {\r\n        this.floorId = Guid.raw();\r\n        this.floorName = floorName;\r\n        this.floorType = floorType;\r\n        this.slots = [];\r\n        this.timeRemaining = 3000; // 30 seconds\r\n\r\n        for (let i = 0; i < slots; ++i) {\r\n            this.slots.push(new FloorSlot());\r\n        }\r\n    }\r\n\r\n    public tick(): void {\r\n        if (this.timeRemaining > 0) {\r\n            this.timeRemaining -= 1;\r\n        }\r\n    }\r\n}\r\n\r\nexport class LobbyFloorInfo extends FloorInfo {\r\n    constructor() {\r\n        super('Lobby', FloorType.Lobby, 0);\r\n        this.timeRemaining = 0;\r\n    }\r\n}\r\n\r\nexport class TopFloorInfo extends FloorInfo {\r\n    constructor() {\r\n        super('', FloorType.Top, 0);\r\n        this.timeRemaining = 0;\r\n    }\r\n}\r\n\r\nexport class EmptyFloorInfo extends FloorInfo {\r\n    constructor() {\r\n        super('Empty floor', FloorType.Empty, 0);\r\n        this.timeRemaining = 0;\r\n    }\r\n}\r\n\r\nexport class ResidentialFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Residential, 5);\r\n    }\r\n}\r\n\r\nexport class RetailFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Retail, 3);\r\n    }\r\n}\r\n\r\nexport class RecreationFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Recreational, 3);\r\n    }\r\n}\r\n\r\nexport class ServiceFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Service, 3);\r\n    }\r\n}\r\n\r\nexport class FoodFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Food, 3);\r\n    }\r\n}\r\n\r\nexport class CreativeFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Creative, 3);\r\n    }\r\n}\r\n",
+            "sourceCode": "import { Guid } from 'guid-typescript';\r\nimport { FloorSlot, SlotState } from './floor-slot';\r\nimport { FloorType } from './floor-type.enum';\r\n\r\nexport interface IFloorInfo {\r\n  floorName: string;\r\n  floorType: FloorType;\r\n  slots: Array<FloorSlot>;\r\n}\r\n\r\nexport abstract class FloorInfo implements IFloorInfo {\r\n  floorId: string;\r\n  floorName: string;\r\n  floorType: FloorType;\r\n  slots: Array<FloorSlot>;\r\n  buildTime: Date;\r\n  timeRemaining: number;\r\n\r\n  constructor(floorName: string, floorType: FloorType) {\r\n    this.floorId = Guid.raw();\r\n    this.floorName = floorName;\r\n    this.floorType = floorType;\r\n    this.slots = [];\r\n    this.timeRemaining = 3000; // 30 seconds\r\n  }\r\n\r\n  public tick(): void {\r\n    if (this.timeRemaining > 0) {\r\n      this.timeRemaining -= 1;\r\n    }\r\n  }\r\n}\r\n\r\nexport class LobbyFloorInfo extends FloorInfo {\r\n  constructor() {\r\n    super('Lobby', FloorType.Lobby);\r\n    this.timeRemaining = 0;\r\n  }\r\n}\r\n\r\nexport class TopFloorInfo extends FloorInfo {\r\n  constructor() {\r\n    super('', FloorType.Top);\r\n    this.timeRemaining = 0;\r\n  }\r\n}\r\n\r\nexport class EmptyFloorInfo extends FloorInfo {\r\n  constructor() {\r\n    super('Empty floor', FloorType.Empty);\r\n    this.timeRemaining = 0;\r\n  }\r\n}\r\n\r\nexport class ResidentialFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Residential);\r\n\r\n    for (let i = 0; i < 5; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Unoccupied));\r\n    }\r\n  }\r\n}\r\n\r\nexport class RetailFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Retail);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class RecreationFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Recreational);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class ServiceFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Service);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class FoodFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Food);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class CreativeFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Creative);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -1400,7 +1500,7 @@
                         "type": "string"
                     }
                 ],
-                "line": 83,
+                "line": 95,
                 "jsdoctags": [
                     {
                         "name": "floorName",
@@ -1480,7 +1580,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 31,
+                    "line": 27,
                     "modifierKind": [
                         114
                     ],
@@ -1627,15 +1727,15 @@
         },
         {
             "name": "LobbyFloorInfo",
-            "id": "class-LobbyFloorInfo-1ffcaad6bafd8cb05e666f48b5f09cda",
+            "id": "class-LobbyFloorInfo-04cf06d4e3d0e13b10a37a38cda5734d",
             "file": "src/app/models/floor-info.ts",
             "type": "class",
-            "sourceCode": "import { Guid } from 'guid-typescript';\r\nimport { FloorSlot } from './floor-slot';\r\nimport { FloorType } from './floor-type.enum';\r\n\r\nexport interface IFloorInfo {\r\n    floorName: string;\r\n    floorType: FloorType;\r\n    slots: Array<FloorSlot>;\r\n}\r\n\r\nexport abstract class FloorInfo implements IFloorInfo {\r\n    floorId: string;\r\n    floorName: string;\r\n    floorType: FloorType;\r\n    slots: Array<FloorSlot>;\r\n    buildTime: Date;\r\n    timeRemaining: number;\r\n\r\n    constructor(floorName: string, floorType: FloorType, slots: number) {\r\n        this.floorId = Guid.raw();\r\n        this.floorName = floorName;\r\n        this.floorType = floorType;\r\n        this.slots = [];\r\n        this.timeRemaining = 3000; // 30 seconds\r\n\r\n        for (let i = 0; i < slots; ++i) {\r\n            this.slots.push(new FloorSlot());\r\n        }\r\n    }\r\n\r\n    public tick(): void {\r\n        if (this.timeRemaining > 0) {\r\n            this.timeRemaining -= 1;\r\n        }\r\n    }\r\n}\r\n\r\nexport class LobbyFloorInfo extends FloorInfo {\r\n    constructor() {\r\n        super('Lobby', FloorType.Lobby, 0);\r\n        this.timeRemaining = 0;\r\n    }\r\n}\r\n\r\nexport class TopFloorInfo extends FloorInfo {\r\n    constructor() {\r\n        super('', FloorType.Top, 0);\r\n        this.timeRemaining = 0;\r\n    }\r\n}\r\n\r\nexport class EmptyFloorInfo extends FloorInfo {\r\n    constructor() {\r\n        super('Empty floor', FloorType.Empty, 0);\r\n        this.timeRemaining = 0;\r\n    }\r\n}\r\n\r\nexport class ResidentialFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Residential, 5);\r\n    }\r\n}\r\n\r\nexport class RetailFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Retail, 3);\r\n    }\r\n}\r\n\r\nexport class RecreationFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Recreational, 3);\r\n    }\r\n}\r\n\r\nexport class ServiceFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Service, 3);\r\n    }\r\n}\r\n\r\nexport class FoodFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Food, 3);\r\n    }\r\n}\r\n\r\nexport class CreativeFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Creative, 3);\r\n    }\r\n}\r\n",
+            "sourceCode": "import { Guid } from 'guid-typescript';\r\nimport { FloorSlot, SlotState } from './floor-slot';\r\nimport { FloorType } from './floor-type.enum';\r\n\r\nexport interface IFloorInfo {\r\n  floorName: string;\r\n  floorType: FloorType;\r\n  slots: Array<FloorSlot>;\r\n}\r\n\r\nexport abstract class FloorInfo implements IFloorInfo {\r\n  floorId: string;\r\n  floorName: string;\r\n  floorType: FloorType;\r\n  slots: Array<FloorSlot>;\r\n  buildTime: Date;\r\n  timeRemaining: number;\r\n\r\n  constructor(floorName: string, floorType: FloorType) {\r\n    this.floorId = Guid.raw();\r\n    this.floorName = floorName;\r\n    this.floorType = floorType;\r\n    this.slots = [];\r\n    this.timeRemaining = 3000; // 30 seconds\r\n  }\r\n\r\n  public tick(): void {\r\n    if (this.timeRemaining > 0) {\r\n      this.timeRemaining -= 1;\r\n    }\r\n  }\r\n}\r\n\r\nexport class LobbyFloorInfo extends FloorInfo {\r\n  constructor() {\r\n    super('Lobby', FloorType.Lobby);\r\n    this.timeRemaining = 0;\r\n  }\r\n}\r\n\r\nexport class TopFloorInfo extends FloorInfo {\r\n  constructor() {\r\n    super('', FloorType.Top);\r\n    this.timeRemaining = 0;\r\n  }\r\n}\r\n\r\nexport class EmptyFloorInfo extends FloorInfo {\r\n  constructor() {\r\n    super('Empty floor', FloorType.Empty);\r\n    this.timeRemaining = 0;\r\n  }\r\n}\r\n\r\nexport class ResidentialFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Residential);\r\n\r\n    for (let i = 0; i < 5; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Unoccupied));\r\n    }\r\n  }\r\n}\r\n\r\nexport class RetailFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Retail);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class RecreationFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Recreational);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class ServiceFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Service);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class FoodFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Food);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class CreativeFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Creative);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
                 "args": [],
-                "line": 38
+                "line": 34
             },
             "properties": [
                 {
@@ -1706,7 +1806,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 31,
+                    "line": 27,
                     "modifierKind": [
                         114
                     ],
@@ -2009,10 +2109,10 @@
         },
         {
             "name": "RecreationFloorInfo",
-            "id": "class-RecreationFloorInfo-1ffcaad6bafd8cb05e666f48b5f09cda",
+            "id": "class-RecreationFloorInfo-04cf06d4e3d0e13b10a37a38cda5734d",
             "file": "src/app/models/floor-info.ts",
             "type": "class",
-            "sourceCode": "import { Guid } from 'guid-typescript';\r\nimport { FloorSlot } from './floor-slot';\r\nimport { FloorType } from './floor-type.enum';\r\n\r\nexport interface IFloorInfo {\r\n    floorName: string;\r\n    floorType: FloorType;\r\n    slots: Array<FloorSlot>;\r\n}\r\n\r\nexport abstract class FloorInfo implements IFloorInfo {\r\n    floorId: string;\r\n    floorName: string;\r\n    floorType: FloorType;\r\n    slots: Array<FloorSlot>;\r\n    buildTime: Date;\r\n    timeRemaining: number;\r\n\r\n    constructor(floorName: string, floorType: FloorType, slots: number) {\r\n        this.floorId = Guid.raw();\r\n        this.floorName = floorName;\r\n        this.floorType = floorType;\r\n        this.slots = [];\r\n        this.timeRemaining = 3000; // 30 seconds\r\n\r\n        for (let i = 0; i < slots; ++i) {\r\n            this.slots.push(new FloorSlot());\r\n        }\r\n    }\r\n\r\n    public tick(): void {\r\n        if (this.timeRemaining > 0) {\r\n            this.timeRemaining -= 1;\r\n        }\r\n    }\r\n}\r\n\r\nexport class LobbyFloorInfo extends FloorInfo {\r\n    constructor() {\r\n        super('Lobby', FloorType.Lobby, 0);\r\n        this.timeRemaining = 0;\r\n    }\r\n}\r\n\r\nexport class TopFloorInfo extends FloorInfo {\r\n    constructor() {\r\n        super('', FloorType.Top, 0);\r\n        this.timeRemaining = 0;\r\n    }\r\n}\r\n\r\nexport class EmptyFloorInfo extends FloorInfo {\r\n    constructor() {\r\n        super('Empty floor', FloorType.Empty, 0);\r\n        this.timeRemaining = 0;\r\n    }\r\n}\r\n\r\nexport class ResidentialFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Residential, 5);\r\n    }\r\n}\r\n\r\nexport class RetailFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Retail, 3);\r\n    }\r\n}\r\n\r\nexport class RecreationFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Recreational, 3);\r\n    }\r\n}\r\n\r\nexport class ServiceFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Service, 3);\r\n    }\r\n}\r\n\r\nexport class FoodFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Food, 3);\r\n    }\r\n}\r\n\r\nexport class CreativeFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Creative, 3);\r\n    }\r\n}\r\n",
+            "sourceCode": "import { Guid } from 'guid-typescript';\r\nimport { FloorSlot, SlotState } from './floor-slot';\r\nimport { FloorType } from './floor-type.enum';\r\n\r\nexport interface IFloorInfo {\r\n  floorName: string;\r\n  floorType: FloorType;\r\n  slots: Array<FloorSlot>;\r\n}\r\n\r\nexport abstract class FloorInfo implements IFloorInfo {\r\n  floorId: string;\r\n  floorName: string;\r\n  floorType: FloorType;\r\n  slots: Array<FloorSlot>;\r\n  buildTime: Date;\r\n  timeRemaining: number;\r\n\r\n  constructor(floorName: string, floorType: FloorType) {\r\n    this.floorId = Guid.raw();\r\n    this.floorName = floorName;\r\n    this.floorType = floorType;\r\n    this.slots = [];\r\n    this.timeRemaining = 3000; // 30 seconds\r\n  }\r\n\r\n  public tick(): void {\r\n    if (this.timeRemaining > 0) {\r\n      this.timeRemaining -= 1;\r\n    }\r\n  }\r\n}\r\n\r\nexport class LobbyFloorInfo extends FloorInfo {\r\n  constructor() {\r\n    super('Lobby', FloorType.Lobby);\r\n    this.timeRemaining = 0;\r\n  }\r\n}\r\n\r\nexport class TopFloorInfo extends FloorInfo {\r\n  constructor() {\r\n    super('', FloorType.Top);\r\n    this.timeRemaining = 0;\r\n  }\r\n}\r\n\r\nexport class EmptyFloorInfo extends FloorInfo {\r\n  constructor() {\r\n    super('Empty floor', FloorType.Empty);\r\n    this.timeRemaining = 0;\r\n  }\r\n}\r\n\r\nexport class ResidentialFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Residential);\r\n\r\n    for (let i = 0; i < 5; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Unoccupied));\r\n    }\r\n  }\r\n}\r\n\r\nexport class RetailFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Retail);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class RecreationFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Recreational);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class ServiceFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Service);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class FoodFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Food);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class CreativeFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Creative);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -2022,7 +2122,7 @@
                         "type": "string"
                     }
                 ],
-                "line": 71,
+                "line": 75,
                 "jsdoctags": [
                     {
                         "name": "floorName",
@@ -2102,7 +2202,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 31,
+                    "line": 27,
                     "modifierKind": [
                         114
                     ],
@@ -2120,10 +2220,10 @@
         },
         {
             "name": "ResidentialFloorInfo",
-            "id": "class-ResidentialFloorInfo-1ffcaad6bafd8cb05e666f48b5f09cda",
+            "id": "class-ResidentialFloorInfo-04cf06d4e3d0e13b10a37a38cda5734d",
             "file": "src/app/models/floor-info.ts",
             "type": "class",
-            "sourceCode": "import { Guid } from 'guid-typescript';\r\nimport { FloorSlot } from './floor-slot';\r\nimport { FloorType } from './floor-type.enum';\r\n\r\nexport interface IFloorInfo {\r\n    floorName: string;\r\n    floorType: FloorType;\r\n    slots: Array<FloorSlot>;\r\n}\r\n\r\nexport abstract class FloorInfo implements IFloorInfo {\r\n    floorId: string;\r\n    floorName: string;\r\n    floorType: FloorType;\r\n    slots: Array<FloorSlot>;\r\n    buildTime: Date;\r\n    timeRemaining: number;\r\n\r\n    constructor(floorName: string, floorType: FloorType, slots: number) {\r\n        this.floorId = Guid.raw();\r\n        this.floorName = floorName;\r\n        this.floorType = floorType;\r\n        this.slots = [];\r\n        this.timeRemaining = 3000; // 30 seconds\r\n\r\n        for (let i = 0; i < slots; ++i) {\r\n            this.slots.push(new FloorSlot());\r\n        }\r\n    }\r\n\r\n    public tick(): void {\r\n        if (this.timeRemaining > 0) {\r\n            this.timeRemaining -= 1;\r\n        }\r\n    }\r\n}\r\n\r\nexport class LobbyFloorInfo extends FloorInfo {\r\n    constructor() {\r\n        super('Lobby', FloorType.Lobby, 0);\r\n        this.timeRemaining = 0;\r\n    }\r\n}\r\n\r\nexport class TopFloorInfo extends FloorInfo {\r\n    constructor() {\r\n        super('', FloorType.Top, 0);\r\n        this.timeRemaining = 0;\r\n    }\r\n}\r\n\r\nexport class EmptyFloorInfo extends FloorInfo {\r\n    constructor() {\r\n        super('Empty floor', FloorType.Empty, 0);\r\n        this.timeRemaining = 0;\r\n    }\r\n}\r\n\r\nexport class ResidentialFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Residential, 5);\r\n    }\r\n}\r\n\r\nexport class RetailFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Retail, 3);\r\n    }\r\n}\r\n\r\nexport class RecreationFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Recreational, 3);\r\n    }\r\n}\r\n\r\nexport class ServiceFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Service, 3);\r\n    }\r\n}\r\n\r\nexport class FoodFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Food, 3);\r\n    }\r\n}\r\n\r\nexport class CreativeFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Creative, 3);\r\n    }\r\n}\r\n",
+            "sourceCode": "import { Guid } from 'guid-typescript';\r\nimport { FloorSlot, SlotState } from './floor-slot';\r\nimport { FloorType } from './floor-type.enum';\r\n\r\nexport interface IFloorInfo {\r\n  floorName: string;\r\n  floorType: FloorType;\r\n  slots: Array<FloorSlot>;\r\n}\r\n\r\nexport abstract class FloorInfo implements IFloorInfo {\r\n  floorId: string;\r\n  floorName: string;\r\n  floorType: FloorType;\r\n  slots: Array<FloorSlot>;\r\n  buildTime: Date;\r\n  timeRemaining: number;\r\n\r\n  constructor(floorName: string, floorType: FloorType) {\r\n    this.floorId = Guid.raw();\r\n    this.floorName = floorName;\r\n    this.floorType = floorType;\r\n    this.slots = [];\r\n    this.timeRemaining = 3000; // 30 seconds\r\n  }\r\n\r\n  public tick(): void {\r\n    if (this.timeRemaining > 0) {\r\n      this.timeRemaining -= 1;\r\n    }\r\n  }\r\n}\r\n\r\nexport class LobbyFloorInfo extends FloorInfo {\r\n  constructor() {\r\n    super('Lobby', FloorType.Lobby);\r\n    this.timeRemaining = 0;\r\n  }\r\n}\r\n\r\nexport class TopFloorInfo extends FloorInfo {\r\n  constructor() {\r\n    super('', FloorType.Top);\r\n    this.timeRemaining = 0;\r\n  }\r\n}\r\n\r\nexport class EmptyFloorInfo extends FloorInfo {\r\n  constructor() {\r\n    super('Empty floor', FloorType.Empty);\r\n    this.timeRemaining = 0;\r\n  }\r\n}\r\n\r\nexport class ResidentialFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Residential);\r\n\r\n    for (let i = 0; i < 5; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Unoccupied));\r\n    }\r\n  }\r\n}\r\n\r\nexport class RetailFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Retail);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class RecreationFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Recreational);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class ServiceFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Service);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class FoodFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Food);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class CreativeFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Creative);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -2133,7 +2233,7 @@
                         "type": "string"
                     }
                 ],
-                "line": 59,
+                "line": 55,
                 "jsdoctags": [
                     {
                         "name": "floorName",
@@ -2213,7 +2313,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 31,
+                    "line": 27,
                     "modifierKind": [
                         114
                     ],
@@ -2360,10 +2460,10 @@
         },
         {
             "name": "RetailFloorInfo",
-            "id": "class-RetailFloorInfo-1ffcaad6bafd8cb05e666f48b5f09cda",
+            "id": "class-RetailFloorInfo-04cf06d4e3d0e13b10a37a38cda5734d",
             "file": "src/app/models/floor-info.ts",
             "type": "class",
-            "sourceCode": "import { Guid } from 'guid-typescript';\r\nimport { FloorSlot } from './floor-slot';\r\nimport { FloorType } from './floor-type.enum';\r\n\r\nexport interface IFloorInfo {\r\n    floorName: string;\r\n    floorType: FloorType;\r\n    slots: Array<FloorSlot>;\r\n}\r\n\r\nexport abstract class FloorInfo implements IFloorInfo {\r\n    floorId: string;\r\n    floorName: string;\r\n    floorType: FloorType;\r\n    slots: Array<FloorSlot>;\r\n    buildTime: Date;\r\n    timeRemaining: number;\r\n\r\n    constructor(floorName: string, floorType: FloorType, slots: number) {\r\n        this.floorId = Guid.raw();\r\n        this.floorName = floorName;\r\n        this.floorType = floorType;\r\n        this.slots = [];\r\n        this.timeRemaining = 3000; // 30 seconds\r\n\r\n        for (let i = 0; i < slots; ++i) {\r\n            this.slots.push(new FloorSlot());\r\n        }\r\n    }\r\n\r\n    public tick(): void {\r\n        if (this.timeRemaining > 0) {\r\n            this.timeRemaining -= 1;\r\n        }\r\n    }\r\n}\r\n\r\nexport class LobbyFloorInfo extends FloorInfo {\r\n    constructor() {\r\n        super('Lobby', FloorType.Lobby, 0);\r\n        this.timeRemaining = 0;\r\n    }\r\n}\r\n\r\nexport class TopFloorInfo extends FloorInfo {\r\n    constructor() {\r\n        super('', FloorType.Top, 0);\r\n        this.timeRemaining = 0;\r\n    }\r\n}\r\n\r\nexport class EmptyFloorInfo extends FloorInfo {\r\n    constructor() {\r\n        super('Empty floor', FloorType.Empty, 0);\r\n        this.timeRemaining = 0;\r\n    }\r\n}\r\n\r\nexport class ResidentialFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Residential, 5);\r\n    }\r\n}\r\n\r\nexport class RetailFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Retail, 3);\r\n    }\r\n}\r\n\r\nexport class RecreationFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Recreational, 3);\r\n    }\r\n}\r\n\r\nexport class ServiceFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Service, 3);\r\n    }\r\n}\r\n\r\nexport class FoodFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Food, 3);\r\n    }\r\n}\r\n\r\nexport class CreativeFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Creative, 3);\r\n    }\r\n}\r\n",
+            "sourceCode": "import { Guid } from 'guid-typescript';\r\nimport { FloorSlot, SlotState } from './floor-slot';\r\nimport { FloorType } from './floor-type.enum';\r\n\r\nexport interface IFloorInfo {\r\n  floorName: string;\r\n  floorType: FloorType;\r\n  slots: Array<FloorSlot>;\r\n}\r\n\r\nexport abstract class FloorInfo implements IFloorInfo {\r\n  floorId: string;\r\n  floorName: string;\r\n  floorType: FloorType;\r\n  slots: Array<FloorSlot>;\r\n  buildTime: Date;\r\n  timeRemaining: number;\r\n\r\n  constructor(floorName: string, floorType: FloorType) {\r\n    this.floorId = Guid.raw();\r\n    this.floorName = floorName;\r\n    this.floorType = floorType;\r\n    this.slots = [];\r\n    this.timeRemaining = 3000; // 30 seconds\r\n  }\r\n\r\n  public tick(): void {\r\n    if (this.timeRemaining > 0) {\r\n      this.timeRemaining -= 1;\r\n    }\r\n  }\r\n}\r\n\r\nexport class LobbyFloorInfo extends FloorInfo {\r\n  constructor() {\r\n    super('Lobby', FloorType.Lobby);\r\n    this.timeRemaining = 0;\r\n  }\r\n}\r\n\r\nexport class TopFloorInfo extends FloorInfo {\r\n  constructor() {\r\n    super('', FloorType.Top);\r\n    this.timeRemaining = 0;\r\n  }\r\n}\r\n\r\nexport class EmptyFloorInfo extends FloorInfo {\r\n  constructor() {\r\n    super('Empty floor', FloorType.Empty);\r\n    this.timeRemaining = 0;\r\n  }\r\n}\r\n\r\nexport class ResidentialFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Residential);\r\n\r\n    for (let i = 0; i < 5; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Unoccupied));\r\n    }\r\n  }\r\n}\r\n\r\nexport class RetailFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Retail);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class RecreationFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Recreational);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class ServiceFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Service);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class FoodFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Food);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class CreativeFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Creative);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -2453,7 +2553,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 31,
+                    "line": 27,
                     "modifierKind": [
                         114
                     ],
@@ -2600,10 +2700,10 @@
         },
         {
             "name": "ServiceFloorInfo",
-            "id": "class-ServiceFloorInfo-1ffcaad6bafd8cb05e666f48b5f09cda",
+            "id": "class-ServiceFloorInfo-04cf06d4e3d0e13b10a37a38cda5734d",
             "file": "src/app/models/floor-info.ts",
             "type": "class",
-            "sourceCode": "import { Guid } from 'guid-typescript';\r\nimport { FloorSlot } from './floor-slot';\r\nimport { FloorType } from './floor-type.enum';\r\n\r\nexport interface IFloorInfo {\r\n    floorName: string;\r\n    floorType: FloorType;\r\n    slots: Array<FloorSlot>;\r\n}\r\n\r\nexport abstract class FloorInfo implements IFloorInfo {\r\n    floorId: string;\r\n    floorName: string;\r\n    floorType: FloorType;\r\n    slots: Array<FloorSlot>;\r\n    buildTime: Date;\r\n    timeRemaining: number;\r\n\r\n    constructor(floorName: string, floorType: FloorType, slots: number) {\r\n        this.floorId = Guid.raw();\r\n        this.floorName = floorName;\r\n        this.floorType = floorType;\r\n        this.slots = [];\r\n        this.timeRemaining = 3000; // 30 seconds\r\n\r\n        for (let i = 0; i < slots; ++i) {\r\n            this.slots.push(new FloorSlot());\r\n        }\r\n    }\r\n\r\n    public tick(): void {\r\n        if (this.timeRemaining > 0) {\r\n            this.timeRemaining -= 1;\r\n        }\r\n    }\r\n}\r\n\r\nexport class LobbyFloorInfo extends FloorInfo {\r\n    constructor() {\r\n        super('Lobby', FloorType.Lobby, 0);\r\n        this.timeRemaining = 0;\r\n    }\r\n}\r\n\r\nexport class TopFloorInfo extends FloorInfo {\r\n    constructor() {\r\n        super('', FloorType.Top, 0);\r\n        this.timeRemaining = 0;\r\n    }\r\n}\r\n\r\nexport class EmptyFloorInfo extends FloorInfo {\r\n    constructor() {\r\n        super('Empty floor', FloorType.Empty, 0);\r\n        this.timeRemaining = 0;\r\n    }\r\n}\r\n\r\nexport class ResidentialFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Residential, 5);\r\n    }\r\n}\r\n\r\nexport class RetailFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Retail, 3);\r\n    }\r\n}\r\n\r\nexport class RecreationFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Recreational, 3);\r\n    }\r\n}\r\n\r\nexport class ServiceFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Service, 3);\r\n    }\r\n}\r\n\r\nexport class FoodFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Food, 3);\r\n    }\r\n}\r\n\r\nexport class CreativeFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Creative, 3);\r\n    }\r\n}\r\n",
+            "sourceCode": "import { Guid } from 'guid-typescript';\r\nimport { FloorSlot, SlotState } from './floor-slot';\r\nimport { FloorType } from './floor-type.enum';\r\n\r\nexport interface IFloorInfo {\r\n  floorName: string;\r\n  floorType: FloorType;\r\n  slots: Array<FloorSlot>;\r\n}\r\n\r\nexport abstract class FloorInfo implements IFloorInfo {\r\n  floorId: string;\r\n  floorName: string;\r\n  floorType: FloorType;\r\n  slots: Array<FloorSlot>;\r\n  buildTime: Date;\r\n  timeRemaining: number;\r\n\r\n  constructor(floorName: string, floorType: FloorType) {\r\n    this.floorId = Guid.raw();\r\n    this.floorName = floorName;\r\n    this.floorType = floorType;\r\n    this.slots = [];\r\n    this.timeRemaining = 3000; // 30 seconds\r\n  }\r\n\r\n  public tick(): void {\r\n    if (this.timeRemaining > 0) {\r\n      this.timeRemaining -= 1;\r\n    }\r\n  }\r\n}\r\n\r\nexport class LobbyFloorInfo extends FloorInfo {\r\n  constructor() {\r\n    super('Lobby', FloorType.Lobby);\r\n    this.timeRemaining = 0;\r\n  }\r\n}\r\n\r\nexport class TopFloorInfo extends FloorInfo {\r\n  constructor() {\r\n    super('', FloorType.Top);\r\n    this.timeRemaining = 0;\r\n  }\r\n}\r\n\r\nexport class EmptyFloorInfo extends FloorInfo {\r\n  constructor() {\r\n    super('Empty floor', FloorType.Empty);\r\n    this.timeRemaining = 0;\r\n  }\r\n}\r\n\r\nexport class ResidentialFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Residential);\r\n\r\n    for (let i = 0; i < 5; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Unoccupied));\r\n    }\r\n  }\r\n}\r\n\r\nexport class RetailFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Retail);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class RecreationFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Recreational);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class ServiceFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Service);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class FoodFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Food);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class CreativeFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Creative);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -2613,7 +2713,7 @@
                         "type": "string"
                     }
                 ],
-                "line": 77,
+                "line": 85,
                 "jsdoctags": [
                     {
                         "name": "floorName",
@@ -2693,7 +2793,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 31,
+                    "line": 27,
                     "modifierKind": [
                         114
                     ],
@@ -2873,15 +2973,15 @@
         },
         {
             "name": "TopFloorInfo",
-            "id": "class-TopFloorInfo-1ffcaad6bafd8cb05e666f48b5f09cda",
+            "id": "class-TopFloorInfo-04cf06d4e3d0e13b10a37a38cda5734d",
             "file": "src/app/models/floor-info.ts",
             "type": "class",
-            "sourceCode": "import { Guid } from 'guid-typescript';\r\nimport { FloorSlot } from './floor-slot';\r\nimport { FloorType } from './floor-type.enum';\r\n\r\nexport interface IFloorInfo {\r\n    floorName: string;\r\n    floorType: FloorType;\r\n    slots: Array<FloorSlot>;\r\n}\r\n\r\nexport abstract class FloorInfo implements IFloorInfo {\r\n    floorId: string;\r\n    floorName: string;\r\n    floorType: FloorType;\r\n    slots: Array<FloorSlot>;\r\n    buildTime: Date;\r\n    timeRemaining: number;\r\n\r\n    constructor(floorName: string, floorType: FloorType, slots: number) {\r\n        this.floorId = Guid.raw();\r\n        this.floorName = floorName;\r\n        this.floorType = floorType;\r\n        this.slots = [];\r\n        this.timeRemaining = 3000; // 30 seconds\r\n\r\n        for (let i = 0; i < slots; ++i) {\r\n            this.slots.push(new FloorSlot());\r\n        }\r\n    }\r\n\r\n    public tick(): void {\r\n        if (this.timeRemaining > 0) {\r\n            this.timeRemaining -= 1;\r\n        }\r\n    }\r\n}\r\n\r\nexport class LobbyFloorInfo extends FloorInfo {\r\n    constructor() {\r\n        super('Lobby', FloorType.Lobby, 0);\r\n        this.timeRemaining = 0;\r\n    }\r\n}\r\n\r\nexport class TopFloorInfo extends FloorInfo {\r\n    constructor() {\r\n        super('', FloorType.Top, 0);\r\n        this.timeRemaining = 0;\r\n    }\r\n}\r\n\r\nexport class EmptyFloorInfo extends FloorInfo {\r\n    constructor() {\r\n        super('Empty floor', FloorType.Empty, 0);\r\n        this.timeRemaining = 0;\r\n    }\r\n}\r\n\r\nexport class ResidentialFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Residential, 5);\r\n    }\r\n}\r\n\r\nexport class RetailFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Retail, 3);\r\n    }\r\n}\r\n\r\nexport class RecreationFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Recreational, 3);\r\n    }\r\n}\r\n\r\nexport class ServiceFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Service, 3);\r\n    }\r\n}\r\n\r\nexport class FoodFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Food, 3);\r\n    }\r\n}\r\n\r\nexport class CreativeFloorInfo extends FloorInfo {\r\n    constructor(floorName: string) {\r\n        super(floorName, FloorType.Creative, 3);\r\n    }\r\n}\r\n",
+            "sourceCode": "import { Guid } from 'guid-typescript';\r\nimport { FloorSlot, SlotState } from './floor-slot';\r\nimport { FloorType } from './floor-type.enum';\r\n\r\nexport interface IFloorInfo {\r\n  floorName: string;\r\n  floorType: FloorType;\r\n  slots: Array<FloorSlot>;\r\n}\r\n\r\nexport abstract class FloorInfo implements IFloorInfo {\r\n  floorId: string;\r\n  floorName: string;\r\n  floorType: FloorType;\r\n  slots: Array<FloorSlot>;\r\n  buildTime: Date;\r\n  timeRemaining: number;\r\n\r\n  constructor(floorName: string, floorType: FloorType) {\r\n    this.floorId = Guid.raw();\r\n    this.floorName = floorName;\r\n    this.floorType = floorType;\r\n    this.slots = [];\r\n    this.timeRemaining = 3000; // 30 seconds\r\n  }\r\n\r\n  public tick(): void {\r\n    if (this.timeRemaining > 0) {\r\n      this.timeRemaining -= 1;\r\n    }\r\n  }\r\n}\r\n\r\nexport class LobbyFloorInfo extends FloorInfo {\r\n  constructor() {\r\n    super('Lobby', FloorType.Lobby);\r\n    this.timeRemaining = 0;\r\n  }\r\n}\r\n\r\nexport class TopFloorInfo extends FloorInfo {\r\n  constructor() {\r\n    super('', FloorType.Top);\r\n    this.timeRemaining = 0;\r\n  }\r\n}\r\n\r\nexport class EmptyFloorInfo extends FloorInfo {\r\n  constructor() {\r\n    super('Empty floor', FloorType.Empty);\r\n    this.timeRemaining = 0;\r\n  }\r\n}\r\n\r\nexport class ResidentialFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Residential);\r\n\r\n    for (let i = 0; i < 5; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Unoccupied));\r\n    }\r\n  }\r\n}\r\n\r\nexport class RetailFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Retail);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class RecreationFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Recreational);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class ServiceFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Service);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class FoodFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Food);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n\r\nexport class CreativeFloorInfo extends FloorInfo {\r\n  constructor(floorName: string) {\r\n    super(floorName, FloorType.Creative);\r\n\r\n    for (let i = 0; i < 3; ++i) {\r\n      this.slots.push(new FloorSlot(SlotState.Empty));\r\n    }\r\n  }\r\n}\r\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
                 "args": [],
-                "line": 45
+                "line": 41
             },
             "properties": [
                 {
@@ -2952,7 +3052,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 31,
+                    "line": 27,
                     "modifierKind": [
                         114
                     ],
@@ -3041,7 +3141,7 @@
                     }
                 ]
             },
-            "templateData": "<div class=\"container-fluid max-h\">\n  <app-toolbar ></app-toolbar>\n  <div class=\"row\" style=\"position: fixed;top: 80px;bottom: 80px;left: 0;right: 0;\">\n      <div class=\"col\">\n        <div>Floors</div>\n        <div class=\"\" style=\"overflow: auto\">\n          <app-floor *ngFor=\"let floor of floors$ | async\" [floor]=\"floor\"></app-floor>\n        </div>\n      </div>\n  </div>\n  <div class=\"row\">\n   <div class=\"col\">footer</div>\n  </div>\n</div>"
+            "templateData": "<div class=\"container-fluid max-h\">\n  <app-toolbar ></app-toolbar>\n  <div class=\"row\" style=\"position: fixed;top: 80px;bottom: 80px;left: 0;right: 0;\">\n      <div class=\"col\">\n        <div>Floors</div>\n        <div class=\"\" style=\"overflow: auto\">\n          <app-floor *ngFor=\"let floor of floors$ | async\" [floor]=\"floor\" [floorCount]=\"(floors$ | async).length\"></app-floor>\n        </div>\n      </div>\n  </div>\n  <div class=\"row\">\n   <div class=\"col\">footer</div>\n  </div>\n</div>"
         },
         {
             "name": "ButtonComponent",
@@ -3126,7 +3226,7 @@
         },
         {
             "name": "FloorComponent",
-            "id": "component-FloorComponent-cd8bd3544abca39698f381b83e9b6408",
+            "id": "component-FloorComponent-7074bb1400190fcc4c925d2d6c0db67c",
             "file": "src/app/components/floor/floor.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -3145,20 +3245,69 @@
             "inputsClass": [
                 {
                     "name": "floor",
-                    "line": 16,
+                    "line": 18,
                     "type": "Floor"
+                },
+                {
+                    "name": "floorCount",
+                    "line": 21,
+                    "type": "number"
                 }
             ],
             "outputsClass": [],
             "propertiesClass": [],
             "methodsClass": [
                 {
+                    "name": "MakeFloor",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "any"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 31,
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "any",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "MoveFloor",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "any"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 35,
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "any",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
                     "name": "ngOnInit",
                     "args": [],
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 18
+                    "line": 23
                 }
             ],
             "hostBindings": [],
@@ -3166,7 +3315,7 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import { Component, Input, OnInit } from '@angular/core';\nimport { Store } from '@ngxs/store';\nimport { Floor } from 'src/app/models/floor';\nimport { FloorInfo } from 'src/app/models/floor-info';\n\n@Component({\n  selector: 'app-floor',\n  templateUrl: './floor.component.html',\n  styleUrls: ['./floor.component.css']\n})\nexport class FloorComponent implements OnInit {\n\n  constructor(store: Store) { }\n\n  @Input()\n  floor: Floor;\n\n  ngOnInit(): void {\n\n  }\n\n  get FloorInfo(): FloorInfo {\n    return this.floor?.floorInfo;\n  }\n}\n",
+            "sourceCode": "import { Component, Input, OnInit } from '@angular/core';\nimport { Floor } from 'src/app/models/floor';\nimport { FloorInfo } from 'src/app/models/floor-info';\nimport { FloorType } from 'src/app/models/floor-type.enum';\nimport { MoveDirection } from 'src/app/models/move-direction.enum';\nimport { FloorManagerService } from 'src/app/services/floor-manager/floor-manager.service';\n\n@Component({\n  selector: 'app-floor',\n  templateUrl: './floor.component.html',\n  styleUrls: ['./floor.component.css']\n})\nexport class FloorComponent implements OnInit {\n\n  constructor(private floorManager: FloorManagerService) { }\n\n  @Input()\n  floor: Floor;\n\n  @Input()\n  floorCount: number;\n\n  ngOnInit(): void {\n\n  }\n\n  get FloorInfo(): FloorInfo {\n    return this.floor?.floorInfo;\n  }\n\n  MakeFloor(event: any): void {\n    this.floorManager.MakeFloor(this.floor.floorID, event as FloorType);\n  }\n\n  MoveFloor(event: any): void {\n    this.floorManager.MoveFloor(this.floor.floorID, event as MoveDirection);\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -3180,15 +3329,15 @@
                 "description": "",
                 "args": [
                     {
-                        "name": "store",
-                        "type": "Store"
+                        "name": "floorManager",
+                        "type": "FloorManagerService"
                     }
                 ],
-                "line": 11,
+                "line": 13,
                 "jsdoctags": [
                     {
-                        "name": "store",
-                        "type": "Store",
+                        "name": "floorManager",
+                        "type": "FloorManagerService",
                         "tagName": {
                             "text": "param"
                         }
@@ -3205,15 +3354,15 @@
                         "name": "FloorInfo",
                         "type": "",
                         "returnType": "FloorInfo",
-                        "line": 22
+                        "line": 27
                     }
                 }
             },
-            "templateData": "<div class=\"d-flex flex-row p-2 border border-danger w-100\" style=\"height: 200px\">\n    <div class=\"d-flex flex-row justify-content-center mb-auto mt-auto\" style=\"width: 15%\">{{floor.ID}}</div>\n    <app-floor-detail [FloorInfo]=\"FloorInfo\" class=\"w-100 h-100\"></app-floor-detail>\n    <app-floor-toolbar [FloorID]=\"floor.floorID\" style=\"width: 15%\"></app-floor-toolbar>\n</div>\n"
+            "templateData": "<div class=\"d-flex flex-row p-2 border border-danger w-100\" style=\"height: 200px\">\n    <div class=\"d-flex flex-row justify-content-center mb-auto mt-auto\" style=\"width: 15%\">{{floor.ID}}</div>\n    <app-floor-detail [FloorInfo]=\"FloorInfo\" class=\"w-100 h-100\"></app-floor-detail>\n    <app-floor-toolbar\n        [Floor]=\"floor\"\n        [FloorCount]=\"floorCount\"\n        (MakeFloor$)=\"MakeFloor($event)\"\n        style=\"width: 15%\"></app-floor-toolbar>\n</div>\n"
         },
         {
             "name": "FloorDetailComponent",
-            "id": "component-FloorDetailComponent-dbce3163b51b74c1fbf5a3442452256a",
+            "id": "component-FloorDetailComponent-e2f2bd98a18c6d53acaa859d674dcfbb",
             "file": "src/app/components/floor-detail/floor-detail.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -3258,7 +3407,7 @@
                     "optional": false,
                     "returnType": "string",
                     "typeParameters": [],
-                    "line": 61
+                    "line": 67
                 },
                 {
                     "name": "ngOnInit",
@@ -3296,7 +3445,7 @@
             "description": "<p>This is a detail floor component</p>\n",
             "rawdescription": "This is a detail floor component",
             "type": "component",
-            "sourceCode": "import { Component, Input, OnInit } from '@angular/core';\nimport { FloorInfo } from 'src/app/models/floor-info';\nimport { FloorSlot } from 'src/app/models/floor-slot';\nimport { FloorType } from 'src/app/models/floor-type.enum';\n/**\n * This is a detail floor component\n */\n@Component({\n  selector: 'app-floor-detail',\n  templateUrl: './floor-detail.component.html',\n  styleUrls: ['./floor-detail.component.css']\n})\nexport class FloorDetailComponent implements OnInit {\n\n  public floorInfo: FloorInfo = null;\n\n  /**\n   * FloorInfo input\n   */\n  @Input()\n  set FloorInfo(value: FloorInfo) {\n    this.floorInfo = value;\n  }\n\n  get isBuilding(): boolean {\n    return this.floorInfo?.timeRemaining !== 0;\n  }\n\n  get isNotBuilding(): boolean {\n    return this.floorInfo?.timeRemaining === 0;\n  }\n\n  get isLobby(): boolean {\n    if (this.floorInfo) {\n      return this.floorInfo.floorType === FloorType.Lobby;\n    }\n    return false;\n  }\n\n  get isEmpty(): boolean {\n    if (this.floorInfo) {\n      return this.floorInfo.floorType === FloorType.Empty;\n    }\n    return false;\n  }\n\n  get isBusy(): boolean {\n    return this.floorInfo?.timeRemaining !== 0;\n  }\n\n  constructor() {\n  }\n\n  ngOnInit(): void {\n  }\n\n  occupied(slot: FloorSlot): string {\n    return slot.occupied ? 'green' : 'gray';\n  }\n\n  labelColor(): string {\n    switch (this.floorInfo?.floorType) {\n      case FloorType.Retail: {\n        return 'magenta';\n      }\n      case FloorType.Residential: {\n        return 'lightgray';\n      }\n      case FloorType.Recreational: {\n        return 'yellow';\n      }\n      case FloorType.Food: {\n        return 'green';\n      }\n      case FloorType.Creative: {\n        return 'orange';\n      }\n      case FloorType.Service: {\n        return 'blue';\n      }\n      default: {\n        return 'white';\n      }\n    }\n  }\n\n}\n",
+            "sourceCode": "import { Component, Input, OnInit } from '@angular/core';\nimport { FloorInfo } from 'src/app/models/floor-info';\nimport { FloorSlot, SlotState } from 'src/app/models/floor-slot';\nimport { FloorType } from 'src/app/models/floor-type.enum';\n/**\n * This is a detail floor component\n */\n@Component({\n  selector: 'app-floor-detail',\n  templateUrl: './floor-detail.component.html',\n  styleUrls: ['./floor-detail.component.css']\n})\nexport class FloorDetailComponent implements OnInit {\n\n  public floorInfo: FloorInfo = null;\n\n  /**\n   * FloorInfo input\n   */\n  @Input()\n  set FloorInfo(value: FloorInfo) {\n    this.floorInfo = value;\n  }\n\n  get isBuilding(): boolean {\n    return this.floorInfo?.timeRemaining !== 0;\n  }\n\n  get isNotBuilding(): boolean {\n    return this.floorInfo?.timeRemaining === 0;\n  }\n\n  get isLobby(): boolean {\n    if (this.floorInfo) {\n      return this.floorInfo.floorType === FloorType.Lobby;\n    }\n    return false;\n  }\n\n  get isEmpty(): boolean {\n    if (this.floorInfo) {\n      return this.floorInfo.floorType === FloorType.Empty;\n    }\n    return false;\n  }\n\n  get isBusy(): boolean {\n    return this.floorInfo?.timeRemaining !== 0;\n  }\n\n  constructor() {\n  }\n\n  ngOnInit(): void {\n  }\n\n  occupied(slot: FloorSlot): string {\n    switch (slot.occupied) {\n      case SlotState.Occupied: return 'silver';\n      case SlotState.Empty: return 'red';\n      case SlotState.Filling: return 'yellow';\n      case SlotState.Full: return 'lightgreen';\n      default: return 'gray'; //  For unknown type and SlotType.Unoccupied\n    }\n  }\n\n  labelColor(): string {\n    switch (this.floorInfo?.floorType) {\n      case FloorType.Retail: {\n        return 'magenta';\n      }\n      case FloorType.Residential: {\n        return 'lightgray';\n      }\n      case FloorType.Recreational: {\n        return 'yellow';\n      }\n      case FloorType.Food: {\n        return 'green';\n      }\n      case FloorType.Creative: {\n        return 'orange';\n      }\n      case FloorType.Service: {\n        return 'blue';\n      }\n      default: {\n        return 'white';\n      }\n    }\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -3386,11 +3535,81 @@
                     }
                 }
             },
-            "templateData": "<div class=\"d-flex flex-column w-100 h-100 border\">\n    <div class=\"d-flex flex-row pr-2\" style=\"background-color: darkslategray; min-height: 24px\">\n        <div class=\"d-flex flex-row justify-content-start\" style=\"min-width: 20%; max-width: 20%;\">\n            <div *ngFor=\"let slot of floorInfo?.slots\" class=\"m-1 p-2\" style=\"border-radius: 8px\" [style.background-color]=\"occupied(slot)\"></div>\n        </div>\n        \n        <div *ngIf=\"isBuilding\" class=\"flex-grow-1\" [style.color]=\"labelColor()\">Coming Soon...</div>\n        <div *ngIf=\"isNotBuilding\" class=\"flex-grow-1\" [style.color]=\"labelColor()\">{{floorInfo?.floorName}}</div>\n        <div *ngIf=\"!isLobby && !isEmpty && isBusy\" style=\"color: white;\">Time: {{floorInfo?.timeRemaining}}</div>\n    </div>\n    <div class=\"flex-grow-1\"></div>\n</div>\n"
+            "templateData": "<div class=\"d-flex flex-column w-100 h-100 border\">\n    <div class=\"d-flex flex-row pr-2\" style=\"background-color: darkslategray; min-height: 24px\">\n        <div class=\"d-flex flex-row justify-content-start\" style=\"min-width: 20%; max-width: 20%;\">\n            <!-- <div *ngFor=\"let slot of floorInfo?.slots\" class=\"m-1 p-2\" style=\"border-radius: 8px\" [style.background-color]=\"occupied(slot)\"></div> -->\n            <app-floor-slot *ngFor=\"let slot of floorInfo?.slots\" [slot]=\"slot\"></app-floor-slot>\n        </div>\n        \n        <div *ngIf=\"isBuilding\" class=\"flex-grow-1\" [style.color]=\"labelColor()\">Coming Soon...</div>\n        <div *ngIf=\"isNotBuilding\" class=\"flex-grow-1\" [style.color]=\"labelColor()\">{{floorInfo?.floorName}}</div>\n        <div *ngIf=\"!isLobby && !isEmpty && isBusy\" style=\"color: white;\">Time: {{floorInfo?.timeRemaining}}</div>\n    </div>\n    <div class=\"flex-grow-1\"></div>\n</div>\n"
+        },
+        {
+            "name": "FloorSlotComponent",
+            "id": "component-FloorSlotComponent-72980f627637297a2d489829307bfea6",
+            "file": "src/app/components/floor-slot/floor-slot.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-floor-slot",
+            "styleUrls": [
+                "./floor-slot.component.css"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./floor-slot.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [
+                {
+                    "name": "slot",
+                    "line": 15,
+                    "type": "FloorSlot"
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 17
+                },
+                {
+                    "name": "slotStyle",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 20
+                }
+            ],
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "",
+            "type": "component",
+            "sourceCode": "import { Input } from '@angular/core';\nimport { Component, OnInit } from '@angular/core';\nimport { FloorSlot, SlotState } from 'src/app/models/floor-slot';\n\n@Component({\n  selector: 'app-floor-slot',\n  templateUrl: './floor-slot.component.html',\n  styleUrls: ['./floor-slot.component.css']\n})\nexport class FloorSlotComponent implements OnInit {\n\n  constructor() { }\n\n  @Input()\n  slot: FloorSlot;\n\n  ngOnInit(): void {\n  }\n\n  slotStyle(): string {\n    switch (this.slot.occupied) {\n      case SlotState.Occupied: return 'silver';\n      case SlotState.Empty: return 'red';\n      case SlotState.Filling: return 'yellow';\n      case SlotState.Full: return 'lightgreen';\n      default: return 'gray'; //  For unknown type and SlotType.Unoccupied\n    }\n  }\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "",
+                    "styleUrl": "./floor-slot.component.css"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [],
+                "line": 10
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<div class=\"m-1 p-2\" style=\"border-radius: 8px\" [style.background-color]=\"slotStyle()\"></div>\n"
         },
         {
             "name": "FloorToolbarComponent",
-            "id": "component-FloorToolbarComponent-97493e65a28b1ee3d8d09635ebcf5425",
+            "id": "component-FloorToolbarComponent-5e7f872e703a12098779b85150b67bde",
             "file": "src/app/components/floor-toolbar/floor-toolbar.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -3408,31 +3627,36 @@
             "viewProviders": [],
             "inputsClass": [
                 {
-                    "name": "FloorID",
-                    "line": 29,
-                    "type": "string"
+                    "name": "Floor",
+                    "line": 27,
+                    "type": ""
+                },
+                {
+                    "name": "FloorCount",
+                    "line": 32,
+                    "type": "number"
                 }
             ],
-            "outputsClass": [],
-            "propertiesClass": [
+            "outputsClass": [
                 {
-                    "name": "destroy",
-                    "defaultValue": "false",
-                    "type": "",
-                    "optional": false,
-                    "description": "",
-                    "line": 20,
-                    "modifierKind": [
-                        112
-                    ]
+                    "name": "MakeFloor$",
+                    "line": 37,
+                    "type": "EventEmitter<FloorType>"
                 },
+                {
+                    "name": "MoveFloor$",
+                    "line": 42,
+                    "type": "EventEmitter<MoveDirection>"
+                }
+            ],
+            "propertiesClass": [
                 {
                     "name": "eFloorType",
                     "defaultValue": "FloorType",
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 25,
+                    "line": 23,
                     "modifierKind": [
                         114
                     ]
@@ -3443,7 +3667,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 26,
+                    "line": 24,
                     "modifierKind": [
                         114
                     ]
@@ -3453,7 +3677,7 @@
                     "type": "Floor",
                     "optional": false,
                     "description": "",
-                    "line": 19,
+                    "line": 14,
                     "modifierKind": [
                         112
                     ]
@@ -3464,14 +3688,26 @@
                     "type": "number",
                     "optional": false,
                     "description": "",
-                    "line": 21,
+                    "line": 15,
                     "modifierKind": [
                         112
                     ]
                 },
                 {
-                    "name": "floorID",
-                    "type": "string",
+                    "name": "makeFloor",
+                    "defaultValue": "new EventEmitter()",
+                    "type": "EventEmitter<FloorType>",
+                    "optional": false,
+                    "description": "",
+                    "line": 17,
+                    "modifierKind": [
+                        112
+                    ]
+                },
+                {
+                    "name": "moveFloor",
+                    "defaultValue": "new EventEmitter()",
+                    "type": "EventEmitter<MoveDirection>",
                     "optional": false,
                     "description": "",
                     "line": 18,
@@ -3487,10 +3723,10 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 71
+                    "line": 72
                 },
                 {
-                    "name": "makeFloor",
+                    "name": "MakeFloor",
                     "args": [
                         {
                             "name": "floorType",
@@ -3500,7 +3736,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 75,
+                    "line": 76,
                     "jsdoctags": [
                         {
                             "name": "floorType",
@@ -3512,7 +3748,7 @@
                     ]
                 },
                 {
-                    "name": "moveFloor",
+                    "name": "MoveFloor",
                     "args": [
                         {
                             "name": "direction",
@@ -3522,7 +3758,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 79,
+                    "line": 80,
                     "jsdoctags": [
                         {
                             "name": "direction",
@@ -3539,7 +3775,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 47
+                    "line": 49
                 },
                 {
                     "name": "ngOnInit",
@@ -3547,7 +3783,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 44
+                    "line": 46
                 }
             ],
             "hostBindings": [],
@@ -3555,7 +3791,7 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import { Component, Input, OnDestroy, OnInit } from '@angular/core';\nimport { Store } from '@ngxs/store';\n\nimport {filter, switchMap, takeWhile, tap} from 'rxjs/operators';\nimport { Floor } from 'src/app/models/floor';\n\nimport { FloorType } from 'src/app/models/floor-type.enum';\nimport { MoveDirection } from 'src/app/models/move-direction.enum';\nimport { ApplicationState } from 'src/app/store/app.state';\nimport { MakeFloor, MoveFloor } from 'src/app/store/floor-toolbar.actions';\n\n@Component({\n  selector: 'app-floor-toolbar',\n  templateUrl: './floor-toolbar.component.html',\n  styleUrls: ['./floor-toolbar.component.css']\n})\nexport class FloorToolbarComponent implements OnInit, OnDestroy {\n  private floorID: string;\n  private floor: Floor;\n  private destroy = false;\n  private floorCount = 0;\n\n  constructor(private store: Store) { }\n\n  public eFloorType = FloorType;\n  public eMoveDirection = MoveDirection;\n\n  @Input()\n  set FloorID(value: string) {\n    this.floorID = value;\n\n    this.store.select(ApplicationState.getAllFloors)\n      .pipe(\n        takeWhile(() => !this.destroy),\n        tap(val => this.floorCount = val.length),\n        switchMap(val => val),\n        filter(val => val.floorID === this.floorID)\n      )\n      .subscribe(val => {\n        this.floor = val;\n      });\n  }\n\n  ngOnInit(): void {\n  }\n\n  ngOnDestroy(): void {\n    this.destroy = true;\n  }\n\n  get isBuilding(): boolean {\n    return this.floor?.floorInfo?.timeRemaining !== 0;\n  }\n\n  get canGoUp(): boolean {\n    return this.floor?.ID - 1 <= 0;\n  }\n\n  get canGoDown(): boolean {\n    return this.floor?.ID + 1 >= this.floorCount - 1;\n  }\n\n  get isEmptyFloor(): boolean {\n    return this.floor?.floorInfo?.floorType === FloorType.Empty;\n  }\n\n  get isNotLobbyTop(): boolean {\n    return this.floor?.floorInfo?.floorType !== FloorType.Lobby && this.floor?.floorInfo?.floorType !== FloorType.Top;\n  }\n\n  complete(): void {\n    this.floor.complete();\n  }\n\n  makeFloor(floorType: FloorType): void {\n    this.store.dispatch(new MakeFloor(this.floorID, floorType));\n  }\n\n  moveFloor(direction: MoveDirection): void {\n    this.store.dispatch(new MoveFloor(this.floorID, direction));\n  }\n\n}\n",
+            "sourceCode": "import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';\n\nimport { Floor } from 'src/app/models/floor';\n\nimport { FloorType } from 'src/app/models/floor-type.enum';\nimport { MoveDirection } from 'src/app/models/move-direction.enum';\n\n@Component({\n  selector: 'app-floor-toolbar',\n  templateUrl: './floor-toolbar.component.html',\n  styleUrls: ['./floor-toolbar.component.css']\n})\nexport class FloorToolbarComponent implements OnInit, OnDestroy {\n  private floor: Floor;\n  private floorCount = 0;\n\n  private makeFloor: EventEmitter<FloorType> = new EventEmitter();\n  private moveFloor: EventEmitter<MoveDirection> = new EventEmitter();\n\n  constructor() { }\n\n  //  made public for use in the HTML template\n  public eFloorType = FloorType;\n  public eMoveDirection = MoveDirection;\n\n  @Input()\n  set Floor(value: Floor) {\n    this.floor = value;\n  }\n\n  @Input()\n  set FloorCount(value: number) {\n    this.floorCount = value;\n  }\n\n  @Output()\n  get MakeFloor$(): EventEmitter<FloorType> {\n    return this.makeFloor;\n  }\n\n  @Output()\n  get MoveFloor$(): EventEmitter<MoveDirection> {\n    return this.moveFloor;\n  }\n\n  ngOnInit(): void {\n  }\n\n  ngOnDestroy(): void {\n  }\n\n  get isBuilding(): boolean {\n    return this.floor?.floorInfo?.timeRemaining !== 0;\n  }\n\n  get canGoUp(): boolean {\n    return this.floor?.ID - 1 <= 0;\n  }\n\n  get canGoDown(): boolean {\n    return this.floor?.ID + 1 >= this.floorCount - 1;\n  }\n\n  get isEmptyFloor(): boolean {\n    return this.floor?.floorInfo?.floorType === FloorType.Empty;\n  }\n\n  get isNotLobbyTop(): boolean {\n    return this.floor?.floorInfo?.floorType !== FloorType.Lobby && this.floor?.floorInfo?.floorType !== FloorType.Top;\n  }\n\n  complete(): void {\n    this.floor.complete();\n  }\n\n  MakeFloor(floorType: FloorType): void {\n    this.makeFloor.emit(floorType);\n  }\n\n  MoveFloor(direction: MoveDirection): void {\n    this.moveFloor.emit(direction);\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -3567,45 +3803,55 @@
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
-                "args": [
-                    {
-                        "name": "store",
-                        "type": "Store"
-                    }
-                ],
-                "line": 21,
-                "jsdoctags": [
-                    {
-                        "name": "store",
-                        "type": "Store",
-                        "tagName": {
-                            "text": "param"
-                        }
-                    }
-                ]
+                "args": [],
+                "line": 18
             },
             "implements": [
                 "OnInit",
                 "OnDestroy"
             ],
             "accessors": {
-                "FloorID": {
-                    "name": "FloorID",
+                "Floor": {
+                    "name": "Floor",
                     "setSignature": {
-                        "name": "FloorID",
+                        "name": "Floor",
                         "type": "void",
                         "args": [
                             {
                                 "name": "value",
-                                "type": "string"
+                                "type": ""
                             }
                         ],
                         "returnType": "void",
-                        "line": 29,
+                        "line": 27,
                         "jsdoctags": [
                             {
                                 "name": "value",
-                                "type": "string",
+                                "type": "",
+                                "tagName": {
+                                    "text": "param"
+                                }
+                            }
+                        ]
+                    }
+                },
+                "FloorCount": {
+                    "name": "FloorCount",
+                    "setSignature": {
+                        "name": "FloorCount",
+                        "type": "void",
+                        "args": [
+                            {
+                                "name": "value",
+                                "type": "number"
+                            }
+                        ],
+                        "returnType": "void",
+                        "line": 32,
+                        "jsdoctags": [
+                            {
+                                "name": "value",
+                                "type": "number",
                                 "tagName": {
                                     "text": "param"
                                 }
@@ -3619,7 +3865,7 @@
                         "name": "isBuilding",
                         "type": "boolean",
                         "returnType": "boolean",
-                        "line": 51
+                        "line": 52
                     }
                 },
                 "canGoUp": {
@@ -3628,7 +3874,7 @@
                         "name": "canGoUp",
                         "type": "boolean",
                         "returnType": "boolean",
-                        "line": 55
+                        "line": 56
                     }
                 },
                 "canGoDown": {
@@ -3637,7 +3883,7 @@
                         "name": "canGoDown",
                         "type": "boolean",
                         "returnType": "boolean",
-                        "line": 59
+                        "line": 60
                     }
                 },
                 "isEmptyFloor": {
@@ -3646,7 +3892,7 @@
                         "name": "isEmptyFloor",
                         "type": "boolean",
                         "returnType": "boolean",
-                        "line": 63
+                        "line": 64
                     }
                 },
                 "isNotLobbyTop": {
@@ -3655,11 +3901,11 @@
                         "name": "isNotLobbyTop",
                         "type": "boolean",
                         "returnType": "boolean",
-                        "line": 67
+                        "line": 68
                     }
                 }
             },
-            "templateData": "<div class=\"mx-1\">\n    <div *ngIf=\"isBuilding\">\n        <button class=\"btn btn-secondary m-1 flex-fill\" (click)=\"complete()\">\n            Complete\n        </button>\n    </div>\n    <div *ngIf=\"!isBuilding\">\n        <div *ngIf=\"isNotLobbyTop\" class=\"d-flex flex-row\">\n            <button class=\"btn btn-secondary m-1 flex-fill\" (click)=\"moveFloor(eMoveDirection.Up)\" [class.disabled]=\"canGoUp\">\n                ^\n            </button>\n            <button class=\"btn btn-secondary m-1 flex-fill\" (click)=\"moveFloor(eMoveDirection.Down)\" [class.disabled]=\"canGoDown\">\n                v\n            </button>\n        </div>\n        <div *ngIf=\"isEmptyFloor\" class=\"d-flex flex-row flex-wrap\">\n            <button class=\"btn btn-secondary m-1 flex-fill\" (click)=\"makeFloor(eFloorType.Residential)\">\n                Res\n            </button>\n            <button class=\"btn btn-secondary m-1 flex-fill\" (click)=\"makeFloor(eFloorType.Retail)\">\n                Retail\n            </button>\n            <button class=\"btn btn-secondary m-1 flex-fill\" (click)=\"makeFloor(eFloorType.Recreational)\">\n                Rec\n            </button>\n            <button class=\"btn btn-secondary m-1 flex-fill\" (click)=\"makeFloor(eFloorType.Food)\">\n                Food\n            </button>\n            <button class=\"btn btn-secondary m-1 flex-fill\" (click)=\"makeFloor(eFloorType.Creative)\">\n                Creat\n            </button>\n            <button class=\"btn btn-secondary m-1 flex-fill\" (click)=\"makeFloor(eFloorType.Service)\">\n                Serv\n            </button>\n        </div>\n    </div>\n</div>"
+            "templateData": "<div class=\"mx-1\">\n    <div *ngIf=\"isBuilding\">\n        <button class=\"btn btn-secondary m-1 flex-fill\" (click)=\"complete()\">\n            Complete\n        </button>\n    </div>\n    <div *ngIf=\"!isBuilding\">\n        <div *ngIf=\"isNotLobbyTop\" class=\"d-flex flex-row\">\n            <button class=\"btn btn-secondary m-1 flex-fill\" (click)=\"MoveFloor(eMoveDirection.Up)\" [class.disabled]=\"canGoUp\">\n                ^\n            </button>\n            <button class=\"btn btn-secondary m-1 flex-fill\" (click)=\"MoveFloor(eMoveDirection.Down)\" [class.disabled]=\"canGoDown\">\n                v\n            </button>\n        </div>\n        <div *ngIf=\"isEmptyFloor\" class=\"d-flex flex-row flex-wrap\">\n            <button class=\"btn btn-secondary m-1 flex-fill\" (click)=\"MakeFloor(eFloorType.Residential)\">\n                Res\n            </button>\n            <button class=\"btn btn-secondary m-1 flex-fill\" (click)=\"MakeFloor(eFloorType.Retail)\">\n                Retail\n            </button>\n            <button class=\"btn btn-secondary m-1 flex-fill\" (click)=\"MakeFloor(eFloorType.Recreational)\">\n                Rec\n            </button>\n            <button class=\"btn btn-secondary m-1 flex-fill\" (click)=\"MakeFloor(eFloorType.Food)\">\n                Food\n            </button>\n            <button class=\"btn btn-secondary m-1 flex-fill\" (click)=\"MakeFloor(eFloorType.Creative)\">\n                Creat\n            </button>\n            <button class=\"btn btn-secondary m-1 flex-fill\" (click)=\"MakeFloor(eFloorType.Service)\">\n                Serv\n            </button>\n        </div>\n    </div>\n</div>"
         },
         {
             "name": "HeaderComponent",
@@ -3889,6 +4135,9 @@
                             "name": "FloorDetailComponent"
                         },
                         {
+                            "name": "FloorSlotComponent"
+                        },
+                        {
                             "name": "FloorToolbarComponent"
                         },
                         {
@@ -3922,6 +4171,22 @@
     "miscellaneous": {
         "variables": [
             {
+                "name": "Building",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/components/floor-toolbar/stories/floor-toolbar.stories.ts",
+                "type": "",
+                "defaultValue": "template.bind({})"
+            },
+            {
+                "name": "Completed",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/components/floor-toolbar/stories/floor-toolbar.stories.ts",
+                "type": "",
+                "defaultValue": "template.bind({})"
+            },
+            {
                 "name": "context",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -3930,12 +4195,12 @@
                 "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
             },
             {
-                "name": "Empty",
+                "name": "Creative",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "src/app/components/floor-detail/stories/floor-detail.stories.ts",
                 "type": "",
-                "defaultValue": "EmptyTemplate.bind({})"
+                "defaultValue": "Template.bind({})"
             },
             {
                 "name": "Empty",
@@ -3943,23 +4208,15 @@
                 "subtype": "variable",
                 "file": "src/app/components/floor-toolbar/stories/floor-toolbar.stories.ts",
                 "type": "",
-                "defaultValue": "EmptyTemplate.bind({})"
+                "defaultValue": "template.bind({})"
             },
             {
-                "name": "EmptyTemplate",
+                "name": "Empty",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "src/app/components/floor-detail/stories/floor-detail.stories.ts",
-                "type": "Story<FloorDetailComponent>",
-                "defaultValue": "() => ({\r\n  component: FloorDetailComponent,\r\n  // template: `<app-floor-detail [floorInfo]=\"floorInfo\"></app-floor-detail>`,\r\n})"
-            },
-            {
-                "name": "EmptyTemplate",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/app/components/floor-toolbar/stories/floor-toolbar.stories.ts",
-                "type": "Story<FloorToolbarComponent>",
-                "defaultValue": "() => ({\r\n  component: FloorToolbarComponent,\r\n  // template: `<app-floor-toolbar [floorInfo]=\"floorInfo\"></app-floor-toolbar>`,\r\n})"
+                "type": "",
+                "defaultValue": "Template.bind({})"
             },
             {
                 "name": "environment",
@@ -3978,10 +4235,34 @@
                 "defaultValue": "{\n  production: false\n}"
             },
             {
+                "name": "floor",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/components/floor-toolbar/stories/floor-toolbar.stories.ts",
+                "type": "",
+                "defaultValue": "Floor.makeEmptyFloor()"
+            },
+            {
+                "name": "Food",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/components/floor-detail/stories/floor-detail.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
                 "name": "Large",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "src/stories/Button.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Lobby",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/components/floor-detail/stories/floor-detail.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -4026,11 +4307,35 @@
                 "defaultValue": "Template.bind({})"
             },
             {
+                "name": "Recreation",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/components/floor-detail/stories/floor-detail.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
                 "name": "require",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "src/test.ts",
                 "type": "literal type"
+            },
+            {
+                "name": "Residential",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/components/floor-detail/stories/floor-detail.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Retail",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/components/floor-detail/stories/floor-detail.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
             },
             {
                 "name": "Secondary",
@@ -4041,12 +4346,28 @@
                 "defaultValue": "Template.bind({})"
             },
             {
+                "name": "Service",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/components/floor-detail/stories/floor-detail.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
                 "name": "Small",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "src/stories/Button.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/components/floor-toolbar/stories/floor-toolbar.stories.ts",
+                "type": "",
+                "defaultValue": "(args: any) => ({\r\n  component: FloorToolbarComponent,\r\n  props: args\r\n})"
             },
             {
                 "name": "Template",
@@ -4071,6 +4392,38 @@
                 "file": "src/stories/Page.stories.ts",
                 "type": "Story<Page>",
                 "defaultValue": "(args: Page) => ({\n  component: Page,\n  props: args,\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/components/floor-detail/stories/floor-detail.stories.ts",
+                "type": "Story<FloorDetailComponent>",
+                "defaultValue": "(args: any) => ({\r\n  component: FloorDetailComponent,\r\n  props: args\r\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/components/floor-slot/stories/floor-slot.stories.ts",
+                "type": "Story<FloorSlotComponent>",
+                "defaultValue": "(args: any) => ({\r\n  component: FloorSlotComponent,\r\n  props: args\r\n})"
+            },
+            {
+                "name": "Top",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/components/floor-detail/stories/floor-detail.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Unoccupied",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/components/floor-slot/stories/floor-slot.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
             }
         ],
         "functions": [],
@@ -4080,31 +4433,40 @@
                 "name": "FloorType",
                 "childs": [
                     {
-                        "name": "Lobby"
+                        "name": "Lobby",
+                        "value": "lobby"
                     },
                     {
-                        "name": "Top"
+                        "name": "Top",
+                        "value": "top"
                     },
                     {
-                        "name": "Empty"
+                        "name": "Empty",
+                        "value": "empty"
                     },
                     {
-                        "name": "Residential"
+                        "name": "Residential",
+                        "value": "residential"
                     },
                     {
-                        "name": "Retail"
+                        "name": "Retail",
+                        "value": "retail"
                     },
                     {
-                        "name": "Recreational"
+                        "name": "Recreational",
+                        "value": "recreational"
                     },
                     {
-                        "name": "Food"
+                        "name": "Food",
+                        "value": "food"
                     },
                     {
-                        "name": "Creative"
+                        "name": "Creative",
+                        "value": "creative"
                     },
                     {
-                        "name": "Service"
+                        "name": "Service",
+                        "value": "service"
                     }
                 ],
                 "ctype": "miscellaneous",
@@ -4116,19 +4478,92 @@
                 "name": "MoveDirection",
                 "childs": [
                     {
-                        "name": "Up"
+                        "name": "Up",
+                        "value": "up"
                     },
                     {
-                        "name": "Down"
+                        "name": "Down",
+                        "value": "down"
                     }
                 ],
                 "ctype": "miscellaneous",
                 "subtype": "enum",
                 "description": "",
                 "file": "src/app/models/move-direction.enum.ts"
+            },
+            {
+                "name": "SlotState",
+                "childs": [
+                    {
+                        "name": "Occupied",
+                        "value": "occupied"
+                    },
+                    {
+                        "name": "Unoccupied",
+                        "value": "unoccupied"
+                    },
+                    {
+                        "name": "Empty",
+                        "value": "empty"
+                    },
+                    {
+                        "name": "Filling",
+                        "value": "filling"
+                    },
+                    {
+                        "name": "Full",
+                        "value": "full"
+                    }
+                ],
+                "ctype": "miscellaneous",
+                "subtype": "enum",
+                "description": "",
+                "file": "src/app/models/floor-slot.ts"
             }
         ],
         "groupedVariables": {
+            "src/app/components/floor-toolbar/stories/floor-toolbar.stories.ts": [
+                {
+                    "name": "Building",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/components/floor-toolbar/stories/floor-toolbar.stories.ts",
+                    "type": "",
+                    "defaultValue": "template.bind({})"
+                },
+                {
+                    "name": "Completed",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/components/floor-toolbar/stories/floor-toolbar.stories.ts",
+                    "type": "",
+                    "defaultValue": "template.bind({})"
+                },
+                {
+                    "name": "Empty",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/components/floor-toolbar/stories/floor-toolbar.stories.ts",
+                    "type": "",
+                    "defaultValue": "template.bind({})"
+                },
+                {
+                    "name": "floor",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/components/floor-toolbar/stories/floor-toolbar.stories.ts",
+                    "type": "",
+                    "defaultValue": "Floor.makeEmptyFloor()"
+                },
+                {
+                    "name": "template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/components/floor-toolbar/stories/floor-toolbar.stories.ts",
+                    "type": "",
+                    "defaultValue": "(args: any) => ({\r\n  component: FloorToolbarComponent,\r\n  props: args\r\n})"
+                }
+            ],
             "src/test.ts": [
                 {
                     "name": "context",
@@ -4148,38 +4583,84 @@
             ],
             "src/app/components/floor-detail/stories/floor-detail.stories.ts": [
                 {
+                    "name": "Creative",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/components/floor-detail/stories/floor-detail.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
                     "name": "Empty",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
                     "file": "src/app/components/floor-detail/stories/floor-detail.stories.ts",
                     "type": "",
-                    "defaultValue": "EmptyTemplate.bind({})"
+                    "defaultValue": "Template.bind({})"
                 },
                 {
-                    "name": "EmptyTemplate",
+                    "name": "Food",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/components/floor-detail/stories/floor-detail.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Lobby",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/components/floor-detail/stories/floor-detail.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Recreation",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/components/floor-detail/stories/floor-detail.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Residential",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/components/floor-detail/stories/floor-detail.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Retail",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/components/floor-detail/stories/floor-detail.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Service",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/components/floor-detail/stories/floor-detail.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
                     "file": "src/app/components/floor-detail/stories/floor-detail.stories.ts",
                     "type": "Story<FloorDetailComponent>",
-                    "defaultValue": "() => ({\r\n  component: FloorDetailComponent,\r\n  // template: `<app-floor-detail [floorInfo]=\"floorInfo\"></app-floor-detail>`,\r\n})"
-                }
-            ],
-            "src/app/components/floor-toolbar/stories/floor-toolbar.stories.ts": [
-                {
-                    "name": "Empty",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/app/components/floor-toolbar/stories/floor-toolbar.stories.ts",
-                    "type": "",
-                    "defaultValue": "EmptyTemplate.bind({})"
+                    "defaultValue": "(args: any) => ({\r\n  component: FloorDetailComponent,\r\n  props: args\r\n})"
                 },
                 {
-                    "name": "EmptyTemplate",
+                    "name": "Top",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/app/components/floor-toolbar/stories/floor-toolbar.stories.ts",
-                    "type": "Story<FloorToolbarComponent>",
-                    "defaultValue": "() => ({\r\n  component: FloorToolbarComponent,\r\n  // template: `<app-floor-toolbar [floorInfo]=\"floorInfo\"></app-floor-toolbar>`,\r\n})"
+                    "file": "src/app/components/floor-detail/stories/floor-detail.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
                 }
             ],
             "src/environments/environment.prod.ts": [
@@ -4295,6 +4776,24 @@
                     "type": "Story<Page>",
                     "defaultValue": "(args: Page) => ({\n  component: Page,\n  props: args,\n})"
                 }
+            ],
+            "src/app/components/floor-slot/stories/floor-slot.stories.ts": [
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/components/floor-slot/stories/floor-slot.stories.ts",
+                    "type": "Story<FloorSlotComponent>",
+                    "defaultValue": "(args: any) => ({\r\n  component: FloorSlotComponent,\r\n  props: args\r\n})"
+                },
+                {
+                    "name": "Unoccupied",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/components/floor-slot/stories/floor-slot.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                }
             ]
         },
         "groupedFunctions": {},
@@ -4304,31 +4803,40 @@
                     "name": "FloorType",
                     "childs": [
                         {
-                            "name": "Lobby"
+                            "name": "Lobby",
+                            "value": "lobby"
                         },
                         {
-                            "name": "Top"
+                            "name": "Top",
+                            "value": "top"
                         },
                         {
-                            "name": "Empty"
+                            "name": "Empty",
+                            "value": "empty"
                         },
                         {
-                            "name": "Residential"
+                            "name": "Residential",
+                            "value": "residential"
                         },
                         {
-                            "name": "Retail"
+                            "name": "Retail",
+                            "value": "retail"
                         },
                         {
-                            "name": "Recreational"
+                            "name": "Recreational",
+                            "value": "recreational"
                         },
                         {
-                            "name": "Food"
+                            "name": "Food",
+                            "value": "food"
                         },
                         {
-                            "name": "Creative"
+                            "name": "Creative",
+                            "value": "creative"
                         },
                         {
-                            "name": "Service"
+                            "name": "Service",
+                            "value": "service"
                         }
                     ],
                     "ctype": "miscellaneous",
@@ -4342,10 +4850,12 @@
                     "name": "MoveDirection",
                     "childs": [
                         {
-                            "name": "Up"
+                            "name": "Up",
+                            "value": "up"
                         },
                         {
-                            "name": "Down"
+                            "name": "Down",
+                            "value": "down"
                         }
                     ],
                     "ctype": "miscellaneous",
@@ -4353,13 +4863,44 @@
                     "description": "",
                     "file": "src/app/models/move-direction.enum.ts"
                 }
+            ],
+            "src/app/models/floor-slot.ts": [
+                {
+                    "name": "SlotState",
+                    "childs": [
+                        {
+                            "name": "Occupied",
+                            "value": "occupied"
+                        },
+                        {
+                            "name": "Unoccupied",
+                            "value": "unoccupied"
+                        },
+                        {
+                            "name": "Empty",
+                            "value": "empty"
+                        },
+                        {
+                            "name": "Filling",
+                            "value": "filling"
+                        },
+                        {
+                            "name": "Full",
+                            "value": "full"
+                        }
+                    ],
+                    "ctype": "miscellaneous",
+                    "subtype": "enum",
+                    "description": "",
+                    "file": "src/app/models/floor-slot.ts"
+                }
             ]
         },
         "groupedTypeAliases": {}
     },
     "routes": [],
     "coverage": {
-        "count": 7,
+        "count": 5,
         "status": "low",
         "files": [
             {
@@ -4394,6 +4935,16 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
+                "name": "Creative",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/components/floor-detail/stories/floor-detail.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
                 "name": "Empty",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
@@ -4404,7 +4955,106 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "EmptyTemplate",
+                "name": "Food",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/components/floor-detail/stories/floor-detail.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Lobby",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/components/floor-detail/stories/floor-detail.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Recreation",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/components/floor-detail/stories/floor-detail.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Residential",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/components/floor-detail/stories/floor-detail.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Retail",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/components/floor-detail/stories/floor-detail.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Service",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/components/floor-detail/stories/floor-detail.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/components/floor-detail/stories/floor-detail.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Top",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/components/floor-slot/floor-slot.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "FloorSlotComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/5",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/components/floor-slot/stories/floor-slot.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/components/floor-slot/stories/floor-slot.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Unoccupied",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
@@ -4415,7 +5065,27 @@
                 "linktype": "component",
                 "name": "FloorToolbarComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/14",
+                "coverageCount": "0/17",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/components/floor-toolbar/stories/floor-toolbar.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Building",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/components/floor-toolbar/stories/floor-toolbar.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Completed",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
                 "status": "low"
             },
             {
@@ -4433,7 +5103,17 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "EmptyTemplate",
+                "name": "floor",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/components/floor-toolbar/stories/floor-toolbar.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "template",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
@@ -4444,7 +5124,7 @@
                 "linktype": "component",
                 "name": "FloorComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/4",
+                "coverageCount": "0/7",
                 "status": "low"
             },
             {
@@ -4652,6 +5332,15 @@
                 "name": "AppTimerService",
                 "coveragePercent": 0,
                 "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/services/floor-manager/floor-manager.service.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "FloorManagerService",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
                 "status": "low"
             },
             {
