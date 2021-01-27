@@ -3605,7 +3605,7 @@
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<div class=\"m-1 p-2\" style=\"border-radius: 8px\" [style.background-color]=\"slotStyle()\"></div>\n"
+            "templateData": "<div class=\"m-1 p-2\" style=\"border-radius: 8px; max-width: 24px;\" [style.background-color]=\"slotStyle()\"></div>\n"
         },
         {
             "name": "FloorToolbarComponent",
@@ -4206,6 +4206,14 @@
                 "name": "Empty",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "src/app/components/floor-detail/stories/floor-detail.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Empty",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "src/app/components/floor-toolbar/stories/floor-toolbar.stories.ts",
                 "type": "",
                 "defaultValue": "template.bind({})"
@@ -4214,9 +4222,17 @@
                 "name": "Empty",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/app/components/floor-detail/stories/floor-detail.stories.ts",
+                "file": "src/app/components/floor-slot/stories/floor-slot.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "environment",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/environments/environment.ts",
+                "type": "object",
+                "defaultValue": "{\n  production: false\n}"
             },
             {
                 "name": "environment",
@@ -4227,12 +4243,12 @@
                 "defaultValue": "{\n  production: true\n}"
             },
             {
-                "name": "environment",
+                "name": "Filling",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/environments/environment.ts",
-                "type": "object",
-                "defaultValue": "{\n  production: false\n}"
+                "file": "src/app/components/floor-slot/stories/floor-slot.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
             },
             {
                 "name": "floor",
@@ -4247,6 +4263,14 @@
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "src/app/components/floor-detail/stories/floor-detail.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Full",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/components/floor-slot/stories/floor-slot.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -4295,6 +4319,14 @@
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "src/stories/Page.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Occupied",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/components/floor-slot/stories/floor-slot.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -4407,7 +4439,7 @@
                 "subtype": "variable",
                 "file": "src/app/components/floor-slot/stories/floor-slot.stories.ts",
                 "type": "Story<FloorSlotComponent>",
-                "defaultValue": "(args: any) => ({\r\n  component: FloorSlotComponent,\r\n  props: args\r\n})"
+                "defaultValue": "(args: any) => ({\r\n  component: FloorSlotComponent,\r\n  props: args,\r\n})"
             },
             {
                 "name": "Top",
@@ -4663,14 +4695,54 @@
                     "defaultValue": "Template.bind({})"
                 }
             ],
-            "src/environments/environment.prod.ts": [
+            "src/app/components/floor-slot/stories/floor-slot.stories.ts": [
                 {
-                    "name": "environment",
+                    "name": "Empty",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/environments/environment.prod.ts",
-                    "type": "object",
-                    "defaultValue": "{\n  production: true\n}"
+                    "file": "src/app/components/floor-slot/stories/floor-slot.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Filling",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/components/floor-slot/stories/floor-slot.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Full",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/components/floor-slot/stories/floor-slot.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Occupied",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/components/floor-slot/stories/floor-slot.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/components/floor-slot/stories/floor-slot.stories.ts",
+                    "type": "Story<FloorSlotComponent>",
+                    "defaultValue": "(args: any) => ({\r\n  component: FloorSlotComponent,\r\n  props: args,\r\n})"
+                },
+                {
+                    "name": "Unoccupied",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/components/floor-slot/stories/floor-slot.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
                 }
             ],
             "src/environments/environment.ts": [
@@ -4681,6 +4753,16 @@
                     "file": "src/environments/environment.ts",
                     "type": "object",
                     "defaultValue": "{\n  production: false\n}"
+                }
+            ],
+            "src/environments/environment.prod.ts": [
+                {
+                    "name": "environment",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/environments/environment.prod.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  production: true\n}"
                 }
             ],
             "src/stories/Button.stories.ts": [
@@ -4775,24 +4857,6 @@
                     "file": "src/stories/Page.stories.ts",
                     "type": "Story<Page>",
                     "defaultValue": "(args: Page) => ({\n  component: Page,\n  props: args,\n})"
-                }
-            ],
-            "src/app/components/floor-slot/stories/floor-slot.stories.ts": [
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/app/components/floor-slot/stories/floor-slot.stories.ts",
-                    "type": "Story<FloorSlotComponent>",
-                    "defaultValue": "(args: any) => ({\r\n  component: FloorSlotComponent,\r\n  props: args\r\n})"
-                },
-                {
-                    "name": "Unoccupied",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/app/components/floor-slot/stories/floor-slot.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
                 }
             ]
         },
@@ -5037,6 +5101,46 @@
                 "name": "FloorSlotComponent",
                 "coveragePercent": 0,
                 "coverageCount": "0/5",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/components/floor-slot/stories/floor-slot.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Empty",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/components/floor-slot/stories/floor-slot.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Filling",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/components/floor-slot/stories/floor-slot.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Full",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/components/floor-slot/stories/floor-slot.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Occupied",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
                 "status": "low"
             },
             {
