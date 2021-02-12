@@ -1,13 +1,16 @@
 <div class="d-flex flex-column w-100 h-100 border">
     <div class="d-flex flex-row pr-2" style="background-color: darkslategray; min-height: 24px">
-        <div class="d-flex flex-row justify-content-start" style="min-width: 20%; max-width: 20%;">
-            <!-- <div *ngFor="let slot of floorInfo?.slots" class="m-1 p-2" style="border-radius: 8px" [style.background-color]="occupied(slot)"></div> -->
-            <app-floor-slot *ngFor="let slot of floorInfo?.slots" [slot]="slot"></app-floor-slot>
+        <app-floor-slot-bar [Slots]="floorInfo?.slots"></app-floor-slot-bar>
+        <div class="d-flex w-100">
+            <div *ngIf="isBuilding" class="flex-grow-1" [style.color]="floorInfo?.floorType | floorTypeColor">Coming Soon...</div>
+            <div *ngIf="isNotBuilding" class="flex-grow-1" [style.color]="floorInfo?.floorType | floorTypeColor">{{floorInfo?.floorName}}</div>
+            <div *ngIf="!isLobby && !isEmpty && isBusy" style="color: white;">Time: {{floorInfo?.timeRemaining}}</div>
+            <div *ngIf="!isTop"><a class="btn btn-sm btn-primary" href="#" (click)="options()">O</a></div>
         </div>
-        
-        <div *ngIf="isBuilding" class="flex-grow-1" [style.color]="labelColor()">Coming Soon...</div>
-        <div *ngIf="isNotBuilding" class="flex-grow-1" [style.color]="labelColor()">{{floorInfo?.floorName}}</div>
-        <div *ngIf="!isLobby && !isEmpty && isBusy" style="color: white;">Time: {{floorInfo?.timeRemaining}}</div>
     </div>
-    <div class="flex-grow-1"></div>
+    <div class="flex-grow-1">
+        <div *ngIf="isTop" class="d-flex justify-content-center align-items-center h-100">
+            <a class="btn btn-primary" href="#" (click)="addFloor()">Build New Level!</a>
+        </div>
+    </div>
 </div>

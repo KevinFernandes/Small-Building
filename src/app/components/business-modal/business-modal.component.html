@@ -1,0 +1,22 @@
+<div>
+    <div class="modal-header px-3 py-1 border-0">
+      <h4 class="modal-title">{{title}}</h4>
+    </div>
+    <div class="modal-body">
+      <div class="d-flex px-2 py-1" style="background: darkslategray; color: white">
+        <div class="d-flex flex-column flex-grow-1">
+            <div class="font-weight-bold" [style.color]="type | floorTypeColor">{{type | floorTypeString}}</div>
+            <div style="font-size: x-small">{{capacity}} Capacity</div>
+            <div style="font-size: x-small">{{rate}} per minute</div>
+        </div>
+        <div class="border" style="width: 54px; background-color: white;">
+        </div>
+      </div>
+      <div *ngFor="let slot of slots" >
+          <app-business-slot [slot]="slot"></app-business-slot>
+      </div>
+    </div>
+    <div class="modal-footer p-1">
+      <button type="button" class="btn btn-secondary btn-sm" (click)="close()">Close</button>
+    </div>
+</div>

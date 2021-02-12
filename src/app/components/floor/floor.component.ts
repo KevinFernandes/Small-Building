@@ -1,4 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Store } from '@ngxs/store';
+import { Observable } from 'rxjs/internal/Observable';
 import { Floor } from 'src/app/models/floor';
 import { FloorInfo } from 'src/app/models/floor-info';
 import { FloorType } from 'src/app/models/floor-type.enum';
@@ -12,13 +14,20 @@ import { FloorManagerService } from 'src/app/services/floor-manager/floor-manage
 })
 export class FloorComponent implements OnInit {
 
-  constructor(private floorManager: FloorManagerService) { }
+  private floor: Floor;
+  floorIndex$: Observable<number>;
+
+  constructor(private floorManager: FloorManagerService, private store: Store) {
+    this.floorIndex$ = this.store.select(state => state.appstate.floors.indexOf(this.floor));
+  }
 
   @Input()
-  floor: Floor;
-
-  @Input()
-  floorCount: number;
+  set Floor(value: Floor) {
+    this.floor = value;
+  }
+  get Floor(): Floor {
+    return this.floor;
+  }
 
   ngOnInit(): void {
 

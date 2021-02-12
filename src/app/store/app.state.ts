@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { patch, updateItem } from '@ngxs/store/operators';
+import produce from 'immer';
 import { Floor } from '../models/floor';
 import { FloorInfo } from '../models/floor-info';
 import { FloorType } from '../models/floor-type.enum';
@@ -68,6 +70,11 @@ export class ApplicationState {
     return state.floors;
   }
 
+  @Selector()
+  static getFloorCount(state: ApplicationStateModel): number {
+    return state.floors.length;
+  }
+
   @Action(TimerTick)
   timerTick(ctx: StateContext<ApplicationStateModel>): void {
     const state = ctx.getState().floors;
@@ -87,17 +94,17 @@ export class ApplicationState {
   addFloor(ctx: StateContext<ApplicationStateModel>): void {
     //  we use the "getState()" method to retrieve the current list of floors
     //  from the application state
-    const state = ctx.getState().floors;
+    const state = [...ctx.getState().floors];
 
     //  To keep this method "functional", we do not modify the floors array directly
     //  instead we create a new array adding the new floor
     const floor = Floor.makeEmptyFloor();
-    floor.ID = state.length - 1;
-    state.splice(-1, 0, floor);
 
     //  then we call "patchState()" method to update the floors
-    ctx.patchState({
-      floors: state,
+    ctx.setState({
+      floors: produce(ctx.getState().floors, (draft) => {
+        draft.splice(-1, 0, floor);
+      }),
     });
   }
 
@@ -112,10 +119,11 @@ export class ApplicationState {
 
   @Action(MoveFloor)
   moveFloor(ctx: StateContext<ApplicationStateModel>, action: MoveFloor): void {
-    const state = ctx.getState().floors;
+    let state: Array<Floor> = null;
+    const floors = ctx.getState().floors;
 
     //  we assume that the index will be valid
-    const index = state.findIndex((floor) => floor.floorID === action.floorID);
+    const index = floors.findIndex((floor) => floor.floorID === action.floorID);
 
     switch (action.moveDirection) {
       case MoveDirection.Up: {
@@ -123,24 +131,26 @@ export class ApplicationState {
         if (index - 1 === 0) {
           return;
         }
-        [state[index - 1], state[index]] = [state[index], state[index - 1]];
+        state = produce(floors, (draft) => {
+          [draft[index - 1], draft[index]] = [draft[index], draft[index - 1]];
+        });
         break;
       }
       case MoveDirection.Down: {
         //  can't go off the tower so return
-        if (index + 1 >= state.length - 1) {
+        if (index + 1 >= floors.length - 1) {
           return;
         }
 
-        [state[index + 1], state[index]] = [state[index], state[index + 1]];
+        state = produce(floors, (draft) => {
+          [draft[index + 1], draft[index]] = [draft[index], draft[index + 1]];
+        });
       }
     }
 
-    state.forEach((floor, ind) => (floor.ID = ind));
-
-    ctx.patchState({
-      floors: state,
-    });
+    ctx.setState(patch({
+      floors: state
+    }));
   }
 
   private getFloorsByType(floorType: FloorType): Floors {
@@ -186,15 +196,11 @@ export class ApplicationState {
     }
 
     //  find the floor in the state that matches the floor ID
-    const floor = state.find((fl) => fl.floorID === floorID);
-    if (floor) {
-      //  we found the floor, tell it to build with the new info
-      floor.buildFloor(info);
-    }
+    const index = state.map(fl => fl.floorID).indexOf(floorID);
 
     //  patch the context state - do we need to do this?
-    ctx.patchState({
-      floors: state,
-    });
+    ctx.setState( patch({
+      floors: updateItem(index, { floorInfo: info })
+    }));
   }
 }

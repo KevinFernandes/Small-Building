@@ -1,0 +1,16 @@
+<div [ngSwitch]="slot.state">
+    <div class="d-flex mt-1" *ngSwitchCase="eSlotState.Empty">
+        <div style="height: 60px; width: 60px; background-color: lightblue" class="mr-2"></div>
+        <div style="background-color: rgb(177, 177, 177)" 
+            class="d-flex flex-column flex-grow-1 align-items-center p-1">
+            <div class="font-weight-bold p-1 empty text-center w-100" style="font-size: larger;">
+                {{slot.name}}
+            </div>
+            <div style="font-size: x-small;">
+                <div>Coins</div>
+                <!-- <div>Job</div>
+                <div>Preferred</div> -->
+            </div>
+        </div>
+    </div>
+</div>

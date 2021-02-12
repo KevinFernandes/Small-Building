@@ -4,6 +4,7 @@
     "codelyzer"
   ],
   "rules": {
+    "ordered-imports": true,
     "align": {
       "options": [
         "parameters",

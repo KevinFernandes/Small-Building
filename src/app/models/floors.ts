@@ -1,4 +1,3 @@
-import { Floor } from './floor';
 import { CreativeFloorInfo, FloorInfo, FoodFloorInfo, RecreationFloorInfo, ResidentialFloorInfo, RetailFloorInfo, ServiceFloorInfo } from './floor-info';
 import { FloorType } from './floor-type.enum';
 

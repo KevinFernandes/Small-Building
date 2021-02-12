@@ -28,6 +28,7 @@
     "@storybook/cli": "^6.1.15",
     "bootstrap": "^4.5.3",
     "guid-typescript": "^1.0.9",
+    "immer": "^8.0.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
@@ -38,6 +39,8 @@
     "@angular/compiler-cli": "~11.0.5",
     "@babel/core": "^7.12.10",
     "@compodoc/compodoc": "^1.1.11",
+    "@ngxs/devtools-plugin": "^3.7.1",
+    "@ngxs/logger-plugin": "^3.7.1",
     "@storybook/addon-actions": "^6.1.15",
     "@storybook/addon-essentials": "^6.1.15",
     "@storybook/addon-knobs": "^6.1.15",

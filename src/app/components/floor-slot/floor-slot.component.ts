@@ -18,7 +18,7 @@ export class FloorSlotComponent implements OnInit {
   }
 
   slotStyle(): string {
-    switch (this.slot.occupied) {
+    switch (this.slot.state) {
       case SlotState.Occupied: return 'silver';
       case SlotState.Empty: return 'red';
       case SlotState.Filling: return 'yellow';

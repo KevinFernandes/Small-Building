@@ -1,9 +1,12 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Select, Store } from '@ngxs/store';
+import { Observable } from 'rxjs/internal/Observable';
 
 import { Floor } from 'src/app/models/floor';
 
 import { FloorType } from 'src/app/models/floor-type.enum';
 import { MoveDirection } from 'src/app/models/move-direction.enum';
+import { ApplicationState, ApplicationStateModel } from 'src/app/store/app.state';
 
 @Component({
   selector: 'app-floor-toolbar',
@@ -11,13 +14,20 @@ import { MoveDirection } from 'src/app/models/move-direction.enum';
   styleUrls: ['./floor-toolbar.component.css']
 })
 export class FloorToolbarComponent implements OnInit, OnDestroy {
-  private floor: Floor;
+  private floor: Floor = null;
+  private floorIndex = -1;
   private floorCount = 0;
 
   private makeFloor: EventEmitter<FloorType> = new EventEmitter();
   private moveFloor: EventEmitter<MoveDirection> = new EventEmitter();
 
-  constructor() { }
+  constructor(private store: Store) {
+    store.select(state => state.appstate.floors.length)
+         .subscribe(num => {
+            this.floorCount = num;
+          });
+
+  }
 
   //  made public for use in the HTML template
   public eFloorType = FloorType;
@@ -26,11 +36,16 @@ export class FloorToolbarComponent implements OnInit, OnDestroy {
   @Input()
   set Floor(value: Floor) {
     this.floor = value;
-  }
-
-  @Input()
-  set FloorCount(value: number) {
-    this.floorCount = value;
+    this.store
+        .select( (state) => {
+          if (this.floor) {
+            return state.appstate.floors.indexOf(this.floor);
+          }
+          return -1;
+        })
+        .subscribe((num: number) => {
+          this.floorIndex = num;
+        });
   }
 
   @Output()
@@ -54,19 +69,19 @@ export class FloorToolbarComponent implements OnInit, OnDestroy {
   }
 
   get canGoUp(): boolean {
-    return this.floor?.ID - 1 <= 0;
+    return this.floorIndex - 1 <= 0;
   }
 
   get canGoDown(): boolean {
-    return this.floor?.ID + 1 >= this.floorCount - 1;
+    return this.floorIndex + 1 >= this.floorCount - 1;
   }
 
   get isEmptyFloor(): boolean {
-    return this.floor?.floorInfo?.floorType === FloorType.Empty;
+    return this.floor?.isEmpty;
   }
 
   get isNotLobbyTop(): boolean {
-    return this.floor?.floorInfo?.floorType !== FloorType.Lobby && this.floor?.floorInfo?.floorType !== FloorType.Top;
+    return !this.floor?.isLobby && !this.floor?.isTop;
   }
 
   complete(): void {
