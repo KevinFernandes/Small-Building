@@ -9,7 +9,7 @@ export interface IFloorInfo {
 }
 
 export abstract class FloorInfo implements IFloorInfo {
-  floorId: string;
+  ID: string;
   floorName: string;
   floorType: FloorType;
   slots: Array<FloorSlot>;
@@ -17,7 +17,7 @@ export abstract class FloorInfo implements IFloorInfo {
   timeRemaining: number;
 
   constructor(floorName: string, floorType: FloorType) {
-    this.floorId = Guid.raw();
+    this.ID = Guid.raw();
     this.floorName = floorName;
     this.floorType = floorType;
     this.slots = [];

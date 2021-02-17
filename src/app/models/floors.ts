@@ -12,7 +12,7 @@ export abstract class Floors {
     excludes: Array<string> = []
   ): FloorInfo {
     const floors = this.floors.filter(
-      (floorInfo: FloorInfo) => excludes.indexOf(floorInfo.floorId) < 0
+      (floorInfo: FloorInfo) => excludes.indexOf(floorInfo.ID) < 0
     );
 
     if (!floors || floors.length <= 0) {

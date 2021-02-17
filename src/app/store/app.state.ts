@@ -3,7 +3,7 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { patch, updateItem } from '@ngxs/store/operators';
 import produce from 'immer';
 import { Floor } from '../models/floor';
-import { FloorInfo } from '../models/floor-info';
+import { EmptyFloorInfo, FloorInfo, LobbyFloorInfo, TopFloorInfo } from '../models/floor-info';
 import { FloorType } from '../models/floor-type.enum';
 import {
   CreativeFloors,
@@ -34,6 +34,7 @@ export class ApplicationStateModel {
    * The current floors in the tower
    */
   floors: Array<Floor> = [Floor.makeLobbyFloor(), Floor.makeTopFloor()];
+  floorInfo: Array<FloorInfo> = [new LobbyFloorInfo(), new TopFloorInfo(), new EmptyFloorInfo()];
 }
 
 /**
@@ -71,6 +72,11 @@ export class ApplicationState {
   }
 
   @Selector()
+  static getFloorInfo(state: ApplicationStateModel, id: string): FloorInfo {
+    return state.floorInfo.find(info => info.ID === id);
+  }
+
+  @Selector()
   static getFloorCount(state: ApplicationStateModel): number {
     return state.floors.length;
   }
@@ -105,6 +111,7 @@ export class ApplicationState {
       floors: produce(ctx.getState().floors, (draft) => {
         draft.splice(-1, 0, floor);
       }),
+      floorInfo: [...ctx.getState().floorInfo]
     });
   }
 
@@ -183,7 +190,7 @@ export class ApplicationState {
     //  we need to be excluded when generating a random floor
     const IDs = state
       .filter((fl) => fl.floorInfo.floorType === floorsData.floorType)
-      .map((fl) => fl.floorInfo.floorId);
+      .map((fl) => fl.floorInfo.ID);
 
     //  get a random floor info for the provided floor data
     //  exclude any floors of the current floor type

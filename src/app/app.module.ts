@@ -21,6 +21,7 @@ import { AppTimerService } from './services/app-timer/app-timer.service';
 import { ApplicationState } from './store/app.state';
 import { BusinessModalComponent } from './components/business-modal/business-modal.component';
 import { BusinessSlotComponent } from './components/business-slot/business-slot.component';
+import { EmptyModalComponent } from './components/empty-modal/empty-modal.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { BusinessSlotComponent } from './components/business-slot/business-slot.
     ResidentialSlotComponent,
     BusinessModalComponent,
     BusinessSlotComponent,
+    EmptyModalComponent,
   ],
   imports: [
     CommonModule,

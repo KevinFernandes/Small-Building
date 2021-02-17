@@ -1,12 +1,15 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngxs/store';
+import { from } from 'rxjs/internal/observable/from';
+import { first } from 'rxjs/internal/operators/first';
 import { IFloorDialog } from 'src/app/models/floor-dialog.interface';
 import { FloorInfo } from 'src/app/models/floor-info';
 import { FloorSlot, SlotState } from 'src/app/models/floor-slot';
 import { FloorType } from 'src/app/models/floor-type.enum';
-import { AddFloor } from 'src/app/store/toolbar.actions';
+import { FloorManagerService } from 'src/app/services/floor-manager/floor-manager.service';
 import { BusinessModalComponent } from '../business-modal/business-modal.component';
+import { EmptyModalComponent } from '../empty-modal/empty-modal.component';
 import { LobbyModalComponent } from '../lobby-modal/lobby-modal.component';
 import { ResidentialModalComponent } from '../residential-modal/residential-modal.component';
 /**
@@ -20,6 +23,7 @@ import { ResidentialModalComponent } from '../residential-modal/residential-moda
 export class FloorDetailComponent implements OnInit {
 
   public floorInfo: FloorInfo = null;
+  public floorID: string = null;
 
   /**
    * FloorInfo input
@@ -27,6 +31,11 @@ export class FloorDetailComponent implements OnInit {
   @Input()
   set FloorInfo(value: FloorInfo) {
     this.floorInfo = value;
+  }
+
+  @Input()
+  set FloorID(value: string) {
+    this.floorID = value;
   }
 
   get isBuilding(): boolean {
@@ -62,7 +71,7 @@ export class FloorDetailComponent implements OnInit {
     return this.floorInfo?.timeRemaining !== 0;
   }
 
-  constructor(private store: Store, private modalService: NgbModal) {
+  constructor(private modalService: NgbModal, private floorService: FloorManagerService) {
   }
 
   ngOnInit(): void {
@@ -80,18 +89,28 @@ export class FloorDetailComponent implements OnInit {
         r = ResidentialModalComponent;
         break;
       }
+      case FloorType.Empty: {
+        r = EmptyModalComponent;
+        break;
+      }
       default: {
         r = BusinessModalComponent;
       }
     }
+
     const ref = this.modalService.open(r, { centered: true });
     (ref.componentInstance as IFloorDialog).title = this.floorInfo.floorName;
     (ref.componentInstance as IFloorDialog).type = this.floorInfo.floorType;
     (ref.componentInstance as IFloorDialog).slots = this.floorInfo.slots;
+    from(ref.result).pipe(first()).subscribe((result: FloorType) => {
+      if (result) {
+        this.floorService.MakeFloor(this.floorID, result);
+      }
+    });
   }
 
   addFloor(): void {
-    this.store.dispatch(new AddFloor());
+    this.floorService.Addfloor();
   }
 
   occupied(slot: FloorSlot): string {
@@ -103,31 +122,4 @@ export class FloorDetailComponent implements OnInit {
       default: return 'gray'; //  For unknown type and SlotType.Unoccupied
     }
   }
-
-  // labelColor(): string {
-  //   switch (this.floorInfo?.floorType) {
-  //     case FloorType.Retail: {
-  //       return 'magenta';
-  //     }
-  //     case FloorType.Residential: {
-  //       return 'lightgray';
-  //     }
-  //     case FloorType.Recreational: {
-  //       return 'yellow';
-  //     }
-  //     case FloorType.Food: {
-  //       return 'green';
-  //     }
-  //     case FloorType.Creative: {
-  //       return 'orange';
-  //     }
-  //     case FloorType.Service: {
-  //       return 'blue';
-  //     }
-  //     default: {
-  //       return 'white';
-  //     }
-  //   }
-  // }
-
 }
