@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { Store } from '@ngxs/store';
-import { Observable } from 'rxjs/internal/Observable';
+import { BehaviorSubject } from 'rxjs';
+import { takeWhile } from 'rxjs/operators';
 import { Floor } from 'src/app/models/floor';
 import { FloorInfo } from 'src/app/models/floor-info';
 import { FloorType } from 'src/app/models/floor-type.enum';
@@ -12,25 +13,37 @@ import { FloorManagerService } from 'src/app/services/floor-manager/floor-manage
   templateUrl: './floor.component.html',
   styleUrls: ['./floor.component.css']
 })
-export class FloorComponent implements OnInit {
+export class FloorComponent implements OnDestroy {
 
   private floor: Floor;
-  floorIndex$: Observable<number>;
+  private isActive = true;
+
+  floorIndex$: BehaviorSubject<number> = new BehaviorSubject<number>(-1);
 
   constructor(private floorManager: FloorManagerService, private store: Store) {
-    this.floorIndex$ = this.store.select(state => state.appstate.floors.indexOf(this.floor));
+
+    //  We monitor the floors to get the new index of this floor if number
+    //  of floors change
+    floorManager.AllFloors$
+                .pipe(takeWhile(() => this.isActive))
+                .subscribe(() => {
+                  if (this.floor) {
+                    this.floorIndex$.next(this.floorManager.FloorIndex(this.floor));
+                  }
+                });
   }
 
   @Input()
   set Floor(value: Floor) {
     this.floor = value;
+    this.floorIndex$.next(this.floorManager.FloorIndex(this.floor));
   }
   get Floor(): Floor {
     return this.floor;
   }
 
-  ngOnInit(): void {
-
+  ngOnDestroy(): void {
+    this.isActive = false;
   }
 
   get FloorInfo(): FloorInfo {
