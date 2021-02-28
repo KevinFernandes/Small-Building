@@ -3,12 +3,12 @@ Make this a *draft PR* in case there are changes you still need to make after re
 
 Before you submit a pull request, please make sure you check the following:
 
-- [ ] You have run `**ng lint**` in the terminal before submitting.  Linting errors will cause the PR build to fail.
-- [ ] If committing new files, make sure to run the `**copyright.cmd**` in the `*/build*` folder to update any missing copyright information.  Missing copyright information will cause the PR build to fail.
+- [ ] You have run **`ng lint`** in the terminal before submitting.  Linting errors will cause the PR build to fail.
+- [ ] If committing new files, make sure to run the **`copyright.cmd`** in the *`/build`* folder to update any missing copyright information.  Missing copyright information will cause the PR build to fail.
 - [ ] You have run *All* unit tests in Visual Studio to ensure that .NET unit tests continue to pass.  Failing unit tests will cause the PR build to fail.
-- [ ] You have run `**npm run test-headless**` to ensure that Angular unit tests continue to pass.  Failing unit tests will cause the PR build to fail.
+- [ ] You have run **`npm run test-headless`** to ensure that Angular unit tests continue to pass.  Failing unit tests will cause the PR build to fail.
 
-### Describe the contents of the PR
+# Describe the contents of the PR
 
 ## What DRs does this PR resolve or correct?
 List all DRs that this PR contains and/or resolves - including these will update the appropriate JIRAs even if they are in differnt repositories.
@@ -20,6 +20,8 @@ List all DRs that this PR contains and/or resolves - including these will update
 If the change requires an updated shared library, Angular or .NET it may require further project or buld updates to make the build succceed.
 - [ ] Yes
 - [ ] No
+
+If *Yes* include the project name and any version number if possible.
 
 ## Does this PR require force another repository to be updated?
 If the change requires another repository to be updated, you should lookup or create a JIRA in the target project and include the JIRA here. 
@@ -38,3 +40,4 @@ If *Yes* include the project name and the associated DR
 
 If you did not update or include any new unit tests, please explain?
 
+## Include any other information that you feel is necessary
