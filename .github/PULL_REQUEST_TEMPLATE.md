@@ -1,9 +1,9 @@
 Make this a *draft PR* in case there are changes you still need to make after reviewing these suggestions.
 @adistaur and @kfernand will be automatically included as reviewers, make sure to include any other developers you feel need to review this code.  Always include collaborators in this branch as reviewers.
 
-Before you submit a pull request, please make sure you check the following:
+### Before you submit a pull request, please make sure you check the following:
 
-- [ ] You have run **`ng lint`** in the terminal before submitting.  Linting errors will cause the PR build to fail.
+- [ ] You have run **`ng lint`** in the terminal or command prompt.  Linting errors will cause the PR build to fail.
 - [ ] If committing new files, make sure to run the **`copyright.cmd`** in the *`/build`* folder to update any missing copyright information.  Missing copyright information will cause the PR build to fail.
 - [ ] You have run *All* unit tests in Visual Studio to ensure that .NET unit tests continue to pass.  Failing unit tests will cause the PR build to fail.
 - [ ] You have run **`npm run test-headless`** to ensure that Angular unit tests continue to pass.  Failing unit tests will cause the PR build to fail.
