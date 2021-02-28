@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
+import { takeWhile } from 'rxjs/operators';
 import { Floor } from './models/floor';
 import { AppTimerService } from './services/app-timer/app-timer.service';
+import { FloorManagerService } from './services/floor-manager/floor-manager.service';
 import { ApplicationState } from './store/app.state';
 
 @Component({
@@ -10,12 +12,23 @@ import { ApplicationState } from './store/app.state';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy{
 
-  constructor(timer: AppTimerService) {
-    timer.Timer$.subscribe(() => {});
+  private isActive = true;
+
+  // @Select(ApplicationState.getAllFloors)
+  public floors$: Observable<Floor[]>;
+
+  constructor(private timer: AppTimerService, private floorManager: FloorManagerService) {
+    this.timer.Timer$
+              .pipe(takeWhile(() => this.isActive))
+              .subscribe(() => {});
+
+    this.floors$ = this.floorManager.AllFloors$;
   }
 
-  @Select(ApplicationState.getAllFloors)
-  floors$: Observable<Floor[]>;
+  public ngOnDestroy(): void {
+    this.isActive = false;
+  }
+
 }
